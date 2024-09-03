@@ -4,6 +4,7 @@ namespace BoekWinkel.Models
 {
     public class BoekModel
     {
+        [Key]
         public int BoekId { get; set; }
 
         [Required]
@@ -20,6 +21,10 @@ namespace BoekWinkel.Models
 
         [Required]
         public string BoekCategory { get; set;}
-    
+
+        public string? BoekImageURL { get; set; }
+
+        public string? BoekImage { get; set; }
+
     }
 }

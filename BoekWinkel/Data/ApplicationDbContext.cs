@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using BoekWinkel.Models;
 
 namespace BoekWinkel.Data
 {
@@ -9,5 +10,6 @@ namespace BoekWinkel.Data
             : base(options)
         {
         }
+        public DbSet<BoekWinkel.Models.BoekModel> BoekModel { get; set; } = default!;
     }
 }

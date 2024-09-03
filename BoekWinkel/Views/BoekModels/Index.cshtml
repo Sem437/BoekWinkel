@@ -1,0 +1,72 @@
+﻿@model IEnumerable<BoekWinkel.Models.BoekModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekImageURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekAuthor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekImageURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekImage)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BoekId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BoekId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BoekId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

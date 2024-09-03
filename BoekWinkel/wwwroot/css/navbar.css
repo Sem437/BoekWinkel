@@ -1,0 +1,27 @@
+﻿.navBar{
+    border: solid black;
+    height: 17vh;
+}
+
+/*  TOP DIV  */
+
+.navBarTop{
+    height: 8.5vh;
+    display: flex;
+}
+
+.navBarTopDivs{
+    border: solid pink;
+    width: 33.3vw;
+}
+
+#navBarTopRight{
+    display: flex;
+}
+
+.search {
+}
+
+.navBar a {
+    color: black;
+}
