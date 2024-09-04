@@ -1,27 +1,59 @@
-﻿.navBar{
-    border: solid black;
+﻿.navBar {
+    box-shadow: 0 2px 4px -1px black;
+    padding-top: 5px;
     height: 17vh;
+}
+
+.navBar a {
+    color: black;
 }
 
 /*  TOP DIV  */
 
 .navBarTop{
-    height: 8.5vh;
+    height: 10vh;
     display: flex;
 }
 
-.navBarTopDivs{
-    border: solid pink;
+.navBarTopDivs {
     width: 33.3vw;
-}
-
-#navBarTopRight{
+    padding: 10px;
     display: flex;
 }
 
-.search {
+#navBarTopLeft {
+    justify-content: left;
+    align-items: center;
+    padding-left: 20px;
 }
 
-.navBar a {
-    color: black;
+#navBarTopMid{
+    justify-content: center;
+    align-items: center;
+}
+
+#navBarTopRight {
+    justify-content: right;
+    align-items: center;
+    padding-right: 25px;
+}
+ 
+.searchBar {
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid black;
+    width: 100%;    
+}
+
+.searchBar:focus{
+    outline: none;
+}
+
+/*  BOTTOM DIV  */
+
+.navBarBottom {
+    height: 7vh;
+    display: flex;
+    justify-content:center;
+    align-items: center;
 }
