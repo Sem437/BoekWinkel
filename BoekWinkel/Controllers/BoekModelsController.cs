@@ -54,16 +54,36 @@ namespace BoekWinkel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekModel boekModel)
+        public async Task<IActionResult> Create([Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekModel boekModel, IFormFile BoekImage)
         {
+            // IFormFile = interface voor geüploade bestanden
             if (ModelState.IsValid)
             {
+                if (BoekImage != null && BoekImage.Length > 0)
+                {
+                    // Lees het bestand in een byte-array
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await BoekImage.CopyToAsync(memoryStream);
+                        byte[] fileBytes = memoryStream.ToArray();
+
+                        // Zet de byte-array om naar een Base64-string
+                        string base64String = Convert.ToBase64String(fileBytes);
+
+                        // Sla de Base64-string op in het model (of een deel van het model dat dit veld heeft)
+                        boekModel.BoekImage = base64String;
+                    }
+                }
+
+                // Voeg het boekmodel toe aan de database
                 _context.Add(boekModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(boekModel);
         }
+
+
 
         // GET: BoekModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
