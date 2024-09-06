@@ -17,14 +17,22 @@
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BoekWinkel</a>
                 </div>
                 <div class="navBarTopDivs" id="navBarTopMid">
-                    <input type="search" class="searchBar" /> 
+                    <div class="searchBarContainer">
+                        <input type="search" class="searchBar" /> 
+                        <button class="searchButton">
+                            <ion-icon name="search-outline" class="Icon"></ion-icon>
+                        </button>
+                    </div>
                 </div>
-                <div class="navBarTopDivs" id="navBarTopRight">             
+                <div class="navBarTopDivs" id="navBarTopRight">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">
+                        <ion-icon name="bag-check-outline" class="Icon"></ion-icon>
+                    </a>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
 
-            <div class="navBarBottom">                       
+            <div class="navBarBottom">                   
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><h5>Home</h5></a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><h5>Privacy</h5></a>
             </div>
@@ -44,6 +52,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

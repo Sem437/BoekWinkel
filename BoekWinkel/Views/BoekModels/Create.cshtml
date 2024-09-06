@@ -7,8 +7,7 @@
 
 <h1>Create</h1>
 
-<h4>BoekModel</h4>
-<hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -40,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="BoekImageURL" class="control-label"></label>
-                <input asp-for="BoekImageURL" class="form-control" />
+                <input asp-for="BoekImageURL" class="form-control" type="file" />
                 <span asp-validation-for="BoekImageURL" class="text-danger"></span>
             </div>
             <div class="form-group">
