@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/BoekWinkel.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/HomeStyling/HomePage.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -38,10 +39,9 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="Body">
+        @RenderBody()
     </div>
 
     <footer class="border-top footer text-muted">

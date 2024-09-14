@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.Body{
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
