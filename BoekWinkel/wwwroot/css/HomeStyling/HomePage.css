@@ -1,20 +1,30 @@
 ﻿
+
+.HomePageProductsDiv{
+    display: flex;
+    margin-inline:10vh;
+    padding-block: 20px;
+    height:100vh
+
+}
+
 .BookBody {
-    display: block; 
-    text-align: center; 
+    display: block;
+    text-align: center;
     background-color: #f8f8f8;
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-    padding: 15px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
     margin: 10px;
-    text-decoration: none; 
+    text-decoration: none;
     color: #333;
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover animaties */
-    width: 200px; 
+    width: 200px;
+    height:37vh;
 }
 
     .BookBody:hover {
-        transform: scale(1.05); /* Vergroot het blok een beetje bij hover */
+        transform: scale(1.05); /*Vergroot het blok een beetje bij hover */
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     }
 

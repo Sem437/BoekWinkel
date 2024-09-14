@@ -3,24 +3,26 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-@foreach(var item in Model)
-{
-    if (!string.IsNullOrEmpty(item.BoekImage))
+<div class="HomePageProductsDiv">
+    
+    @foreach(var item in Model)
     {
-        <a href="#" class="BookBody">
-            <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" />
-            <div class="BookName">@item.BoekTitle</div>
-            <div class="BookPrice">€@item.BoekPrice</div>
-        </a>
+        if (!string.IsNullOrEmpty(item.BoekImage))
+        {
+            <a href="#" class="BookBody">
+                <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" />
+                <div class="BookName">@item.BoekTitle</div>
+                <div class="BookPrice">€@item.BoekPrice</div>
+            </a>
+        }
+    
+        if(!string.IsNullOrEmpty(item.BoekImageURL))
+        {
+            <a href="#" class="BookBody">
+                <img src="@item.BoekImageURL" alt="Boek afbeelding" />
+                <div class="BookName">@item.BoekTitle</div>
+                <div class="BookPrice">€@item.BoekPrice</div>
+            </a>
+        }
     }
-
-    if(!string.IsNullOrEmpty(item.BoekImageURL))
-    {
-        <a href="#" class="BookBody">
-            <img src="@item.BoekImageURL" alt="Boek afbeelding" />
-            <div class="BookName">@item.BoekTitle</div>
-            <div class="BookPrice">€@item.BoekPrice</div>
-        </a>
-    }
-}
+</div>
