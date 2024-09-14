@@ -1,4 +1,14 @@
-﻿@{
+﻿@model IEnumerable<BoekWinkel.Models.BoekModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
-<h1>Welcome</h1>
+
+@foreach(var item in Model)
+{
+    if (!string.IsNullOrEmpty(item.BoekImage))
+    {
+     
+        <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" style="max-width: 150px;" />
+    }
+}

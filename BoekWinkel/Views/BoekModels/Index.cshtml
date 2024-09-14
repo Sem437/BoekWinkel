@@ -56,10 +56,26 @@
                 @Html.DisplayFor(modelItem => item.BoekCategory)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BoekImageURL)
+                @if(!string.IsNullOrEmpty(item.BoekImageURL))
+                {
+                     <a href="@item.BoekImageURL"> Afbeelding </a>
+                }
+                else
+                {
+                    string leeg = "Leeg";
+                     @Html.DisplayFor(modelItem => leeg);
+                }
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekImage)
+            <td>                
+                @if(!string.IsNullOrEmpty(item.BoekImage))
+                {
+                     <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" style="max-width: 100px;"/>
+                }
+                else
+                {
+                     string leeg = "Leeg";
+                     @Html.DisplayFor(modelItem => leeg);
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BoekId">Edit</a> |
