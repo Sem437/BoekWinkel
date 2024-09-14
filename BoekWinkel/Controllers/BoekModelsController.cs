@@ -58,33 +58,45 @@ namespace BoekWinkel.Controllers
         {
             // IFormFile = interface voor geüploade bestanden
             if (ModelState.IsValid)
-            {
-                if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
+            {                
+                if(boekModel.BoekImage ==  null && boekModel.BoekImageURL == null)
                 {
-                    // kijkt of het een foto is en onder 5mb
-                    if(BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024)
-                    {
-                        // Lees het bestand in een byte-array
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            Console.WriteLine(memoryStream.ToString());
-
-                            await BoekImage.CopyToAsync(memoryStream);
-                            byte[] fileBytes = memoryStream.ToArray();
-
-                            // Zet de byte-array om naar een Base64-string
-                            string base64String = Convert.ToBase64String(fileBytes);
-
-                            // Sla de Base64-string op in het model (of een deel van het model dat dit veld heeft)
-                            boekModel.BoekImage = base64String;
-                        }
-                    }                   
+                    return BadRequest();
                 }
+                else if(boekModel.BoekImage != null && boekModel.BoekImageURL != null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
+                    {
+                        // kijkt of het een foto is en onder 5mb
+                        if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024)
+                        {
+                            // Lees het bestand in een byte-array
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                Console.WriteLine(memoryStream.ToString());
 
-                // Voeg het boekmodel toe aan de database
-                _context.Add(boekModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                                await BoekImage.CopyToAsync(memoryStream);
+                                byte[] fileBytes = memoryStream.ToArray();
+
+                                // Zet de byte-array om naar een Base64-string
+                                string base64String = Convert.ToBase64String(fileBytes);
+
+                                // Sla de Base64-string op in het model (of een deel van het model dat dit veld heeft)
+                                boekModel.BoekImage = base64String;
+                            }
+                        }
+                    }
+
+                    // Voeg het boekmodel toe aan de database
+                    _context.Add(boekModel);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+              
             }
             return View(boekModel);
         }
