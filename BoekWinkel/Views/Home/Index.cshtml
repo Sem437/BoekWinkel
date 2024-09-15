@@ -9,7 +9,7 @@
     {
         if (!string.IsNullOrEmpty(item.BoekImage))
         {
-            <a href="#" class="BookBody">
+            <a href="home/details/@item.BoekId" class="BookBody">
                 <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" />
                 <div class="BookName">@item.BoekTitle</div>
                 <div class="BookPrice">€@item.BoekPrice</div>
@@ -18,7 +18,7 @@
     
         if(!string.IsNullOrEmpty(item.BoekImageURL))
         {
-            <a href="#" class="BookBody">
+            <a href="home/details/@item.BoekId" class="BookBody">
                 <img src="@item.BoekImageURL" alt="Boek afbeelding" />
                 <div class="BookName">@item.BoekTitle</div>
                 <div class="BookPrice">€@item.BoekPrice</div>

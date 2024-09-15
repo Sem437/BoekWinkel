@@ -22,6 +22,19 @@ namespace BoekWinkel.Controllers
             return View(await _context.BoekModel.ToListAsync());
         }
 
+        public async Task<IActionResult> Details(int Id)
+        {
+            if(Id == null) 
+            {
+                return NotFound();
+            }
+
+            var boekDetails = await _context.BoekModel
+                .FirstOrDefaultAsync(b => b.BoekId == Id);
+
+            return View(boekDetails);
+        }
+
         public IActionResult Privacy()
         {
             return View();
