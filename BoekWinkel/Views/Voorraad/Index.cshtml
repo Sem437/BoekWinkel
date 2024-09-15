@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BoekWinkel.Models.VoorRaadBoeken>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BoekModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.boekId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.voorRaad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.verkocht)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.geretourd)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoekModel.BoekAuthor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.boekId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.voorRaad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.verkocht)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.geretourd)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.voorraadId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.voorraadId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.voorraadId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

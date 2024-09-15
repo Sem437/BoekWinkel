@@ -4,6 +4,7 @@ using BoekWinkel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoekWinkel.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240915101715_modelsupdate")]
+    partial class modelsupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,33 +61,6 @@ namespace BoekWinkel.Data.Migrations
                     b.HasKey("BoekId");
 
                     b.ToTable("BoekModel");
-                });
-
-            modelBuilder.Entity("BoekWinkel.Models.VoorRaadBoeken", b =>
-                {
-                    b.Property<int>("voorraadId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("voorraadId"));
-
-                    b.Property<int>("boekId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("geretourd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("verkocht")
-                        .HasColumnType("int");
-
-                    b.Property<int>("voorRaad")
-                        .HasColumnType("int");
-
-                    b.HasKey("voorraadId");
-
-                    b.HasIndex("boekId");
-
-                    b.ToTable("VoorRaadBoeken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -287,17 +263,6 @@ namespace BoekWinkel.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("BoekWinkel.Models.VoorRaadBoeken", b =>
-                {
-                    b.HasOne("BoekWinkel.Models.BoekModel", "BoekModel")
-                        .WithMany()
-                        .HasForeignKey("boekId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BoekModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

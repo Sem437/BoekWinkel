@@ -8,19 +8,19 @@ namespace BoekWinkel.Models
         public int BoekId { get; set; }
 
         [Required]
-        public string BoekTitle { get; set; }
+        public required string BoekTitle { get; set; }
 
         [Required]
-        public string BoekAuthor { get; set; }
+        public required string BoekAuthor { get; set; }
 
         [Required]
-        public string BoekDescription { get; set;}
+        public required string BoekDescription { get; set;}
 
         [Required]
-        public int BoekPrice { get; set; }
+        public decimal BoekPrice { get; set; }
 
         [Required]
-        public string BoekCategory { get; set;}
+        public required string BoekCategory { get; set;}
 
         public string? BoekImageURL { get; set; }
 

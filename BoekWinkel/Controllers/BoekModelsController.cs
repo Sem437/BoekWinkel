@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
 using BoekWinkel.Models;
+using BoekWinkel.Data.Migrations;
 
 namespace BoekWinkel.Controllers
 {
@@ -54,52 +55,61 @@ namespace BoekWinkel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekModel boekModel, IFormFile BoekImage)
+        public async Task<IActionResult> Create([Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekWinkel.Models.BoekModel boekModel, IFormFile BoekImage)
         {
-            // IFormFile = interface voor geüploade bestanden
+            // Check if model is valid
             if (ModelState.IsValid)
-            {                
-                if(boekModel.BoekImage ==  null && boekModel.BoekImageURL == null)
+            {
+                /*
+                if (boekModel.BoekImage == null && boekModel.BoekImageURL == null ||
+                    boekModel.BoekImage != null && boekModel.BoekImageURL != null)
                 {
                     return BadRequest();
                 }
-                else if(boekModel.BoekImage != null && boekModel.BoekImageURL != null)
-                {
-                    return BadRequest();
-                }
-                else
-                {
+                */
+                            
+                    // Verwerking van afbeelding als Base64-string
                     if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
                     {
-                        // kijkt of het een foto is en onder 5mb
-                        if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024)
+                        if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5mb
                         {
-                            // Lees het bestand in een byte-array
                             using (var memoryStream = new MemoryStream())
                             {
-                                Console.WriteLine(memoryStream.ToString());
-
                                 await BoekImage.CopyToAsync(memoryStream);
                                 byte[] fileBytes = memoryStream.ToArray();
-
-                                // Zet de byte-array om naar een Base64-string
                                 string base64String = Convert.ToBase64String(fileBytes);
-
-                                // Sla de Base64-string op in het model (of een deel van het model dat dit veld heeft)
                                 boekModel.BoekImage = base64String;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Afbeelding is te groot of geen afbeeldingstype");
                         }
                     }
 
                     // Voeg het boekmodel toe aan de database
                     _context.Add(boekModel);
                     await _context.SaveChangesAsync();
+
+                    // Nu het boek is opgeslagen, voeg het voorraaditem toe
+                    var voorraad = new VoorRaadBoeken
+                    {
+                        boekId = boekModel.BoekId, // BoekId is nu beschikbaar
+                        voorRaad = 0,
+                        verkocht = 0,
+                        geretourd = 0
+                    };
+
+                    _context.Add(voorraad);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
-                }
-              
-            }
+                
+            }          
+
             return View(boekModel);
         }
+
 
 
 
@@ -124,7 +134,7 @@ namespace BoekWinkel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekModel boekModel)
+        public async Task<IActionResult> Edit(int id, [Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekWinkel.Models.BoekModel boekModel)
         {
             if (id != boekModel.BoekId)
             {
