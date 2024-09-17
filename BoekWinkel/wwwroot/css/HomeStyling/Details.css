@@ -1,0 +1,41 @@
+﻿
+.productDetailsDiv{
+    height: 70vh;
+    margin-inline: 20vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.productDetailsDivTop {
+    height: 7vh;
+    display: flex;
+    align-items: center;
+}
+
+.productDetailsDiMid{   
+    height: 80vh;
+    display: flex;
+}
+
+.productDetailsDivMidLeft {
+    border: solid green;
+    width: 50%;
+    padding-top: 5vh;
+}
+
+.bookImage {
+    width: 60%; /* Vergroot de breedte van de afbeelding */
+    height: auto; /* Zorg ervoor dat de hoogte proportioneel blijft */
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.productDetailsDivMidRight {
+    border: solid gray;
+    width: 50%;
+    padding-top: 5vh;
+}
+
+.priceProduct{
+    color: red;
+}

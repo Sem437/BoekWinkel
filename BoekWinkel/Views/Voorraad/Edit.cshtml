@@ -13,10 +13,10 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="voorraadId" />
+            <input type="hidden" asp-for="voorraadId" asp-items="ViewBag.VoorRaadId" />
             <div class="form-group">
                 <label asp-for="boekId" class="control-label"></label>
-                <select asp-for="boekId" class="form-control" asp-items="ViewBag.boekId"></select>
+                <input asp-for="boekId" class="form-control" asp-items="ViewBag.boekId"></input>
                 <span asp-validation-for="boekId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,6 +36,9 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div>              
+                @ViewBag.debug
             </div>
         </form>
     </div>

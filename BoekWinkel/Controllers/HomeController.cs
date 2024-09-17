@@ -24,7 +24,7 @@ namespace BoekWinkel.Controllers
 
         public async Task<IActionResult> Details(int Id)
         {
-            if(Id == null) 
+            if(Id == 0) 
             {
                 return NotFound();
             }
@@ -32,7 +32,21 @@ namespace BoekWinkel.Controllers
             var boekDetails = await _context.BoekModel
                 .FirstOrDefaultAsync(b => b.BoekId == Id);
 
-            return View(boekDetails);
+            if (boekDetails == null)
+            {
+                return NotFound(); 
+            }
+
+            var voorraadBoek = await _context.VoorRaadBoeken
+               .FirstOrDefaultAsync(v => v.boekId == Id);
+
+            ViewModel viewModel = new ViewModel
+            {
+                BoekModel = boekDetails,
+                voorRaadBoeken = voorraadBoek
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

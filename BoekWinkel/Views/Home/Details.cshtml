@@ -1,12 +1,48 @@
-﻿@model BoekWinkel.Models.BoekModel
+﻿@model BoekWinkel.Models.ViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<head>
+    <link rel="stylesheet" href="~/css/HomeStyling/Details.css" />
+</head>
 
+<div class="productDetailsDiv">
+    <div class="productDetailsDivTop">
+        <h1>@Model.BoekModel.BoekTitle</h1>
+    </div>
 
-<div>
-    <h1>Details</h1>
-    <a asp-action="Index">Back to List</a>
-<div>
+    <div class="productDetailsDiMid">
+        <div class="productDetailsDivMidLeft">
+            <img src="data:image/jpeg;base64,@Model.BoekModel.BoekImage" alt="Boek afbeelding" class="bookImage" />
+        </div>
+        <div class="productDetailsDivMidRight">
+            <p><strong><h3 class="priceProduct">@Model.BoekModel.BoekPrice </h3></strong></p>
+
+            <h2><strong>Details</strong></h2>
+            <p><strong>Author:</strong> @Model.BoekModel.BoekAuthor</p>
+            <p><strong>Category:</strong> @Model.BoekModel.BoekCategory</p>
+            <p><strong>Description:</strong> @Model.BoekModel.BoekDescription</p>
+             <div>
+                @{
+                    if (Model.voorRaadBoeken.voorRaad > 10)
+                    {
+                        <h2>On Stock</h2>
+                    }
+                    else if(Model.voorRaadBoeken.voorRaad <= 10)
+                    {
+                        <h2>Low on stock </h2>
+                        <h4>@Model.voorRaadBoeken.voorRaad Left</h4>
+                    }
+                    else
+                    {
+                        <h2> Sold Out</h2>
+                    }
+                }
+             </div>           
+        </div>
+    </div>
+
+    <a asp-action="Index" class="backButton">Back</a>
+</div>

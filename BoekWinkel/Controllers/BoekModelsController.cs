@@ -60,14 +60,14 @@ namespace BoekWinkel.Controllers
             // Check if model is valid
             if (ModelState.IsValid)
             {
-                /*
+
                 if (boekModel.BoekImage == null && boekModel.BoekImageURL == null ||
                     boekModel.BoekImage != null && boekModel.BoekImageURL != null)
                 {
                     return BadRequest();
                 }
-                */
-                            
+                else
+                {
                     // Verwerking van afbeelding als Base64-string
                     if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
                     {
@@ -86,7 +86,7 @@ namespace BoekWinkel.Controllers
                             Console.WriteLine("Afbeelding is te groot of geen afbeeldingstype");
                         }
                     }
-
+                }
                     // Voeg het boekmodel toe aan de database
                     _context.Add(boekModel);
                     await _context.SaveChangesAsync();

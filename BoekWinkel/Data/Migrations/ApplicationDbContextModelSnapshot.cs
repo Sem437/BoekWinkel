@@ -57,7 +57,7 @@ namespace BoekWinkel.Data.Migrations
 
                     b.HasKey("BoekId");
 
-                    b.ToTable("BoekModel");
+                    b.ToTable("BoekModel", (string)null);
                 });
 
             modelBuilder.Entity("BoekWinkel.Models.VoorRaadBoeken", b =>
@@ -84,7 +84,7 @@ namespace BoekWinkel.Data.Migrations
 
                     b.HasIndex("boekId");
 
-                    b.ToTable("VoorRaadBoeken");
+                    b.ToTable("VoorRaadBoeken", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

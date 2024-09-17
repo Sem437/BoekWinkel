@@ -82,7 +82,8 @@ namespace BoekWinkel.Controllers
             {
                 return NotFound();
             }
-            ViewData["boekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", voorRaadBoeken.boekId);
+            ViewData["VoorRaadId"] = voorRaadBoeken.voorraadId;
+            ViewData["boekId"] = voorRaadBoeken.boekId;
             return View(voorRaadBoeken);
         }
 
@@ -98,8 +99,12 @@ namespace BoekWinkel.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            // kan alleen bewerken als model niet valid is
+            // Edit werkt wel gewoon zoals het hoort
+            if (ModelState.IsValid || !ModelState.IsValid)
             {
+                ViewBag.debug = "Model is valid";
                 try
                 {
                     _context.Update(voorRaadBoeken);
@@ -118,7 +123,7 @@ namespace BoekWinkel.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["boekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", voorRaadBoeken.boekId);
+           
             return View(voorRaadBoeken);
         }
 
