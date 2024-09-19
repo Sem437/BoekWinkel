@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
 using BoekWinkel.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoekWinkel.Controllers
-{
+{    
     public class VoorraadController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +19,7 @@ namespace BoekWinkel.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Voorraad
         public async Task<IActionResult> Index()
         {

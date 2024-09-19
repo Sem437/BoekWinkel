@@ -36,6 +36,10 @@
             <div class="navBarBottom">                   
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><h5>Home</h5></a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><h5>Privacy</h5></a>
+                @if(User.IsInRole("Admin"))
+                {
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Voorraad" asp-action="Index"><h5>Voorraad</h5></a>                    
+                }
             </div>
         </nav>
     </header>
