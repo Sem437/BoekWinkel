@@ -38,7 +38,10 @@
     color: red;
 }
 
-.voorRaadDiv{
-    border: solid black 1px;
-
+div.voorRaadDivDetailsView{
+    width: 8vw;
+    border: solid black 2px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
 }

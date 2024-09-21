@@ -4,9 +4,10 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<head>
+@section Styles
+{
     <link rel="stylesheet" href="~/css/HomeStyling/Details.css" />
-</head>
+}
 
 <div class="productDetailsDiv">
     <div class="productDetailsDivTop">
@@ -28,18 +29,22 @@
                 @{
                     if (Model.voorRaadBoeken.voorRaad > 10)
                     {
-                        <div class="voorRaadDiv">
-                            On Stock                      
+                        <div class="voorRaadDivDetailsView">
+                            <strong>On Stock</strong>
                         </div>
                     }
-                    else if(Model.voorRaadBoeken.voorRaad <= 10)
+                    else if(Model.voorRaadBoeken.voorRaad <= 10 && Model.voorRaadBoeken.voorRaad > 0)
                     {
-                        <h2>Low on stock </h2>
-                        <h4>@Model.voorRaadBoeken.voorRaad Left</h4>
+                        <div class="voorRaadDivDetailsView">
+                            <strong>Low On Stock</strong>
+                            @Model.voorRaadBoeken.voorRaad Left
+                        </div>
                     }
                     else
                     {
-                        <h2> Sold Out</h2>
+                        <div class="voorRaadDivDetailsView">
+                            <strong>Sold out</strong>
+                        </div>
                     }
                 }
              </div>           
