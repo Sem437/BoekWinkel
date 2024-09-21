@@ -28,7 +28,9 @@
                 @{
                     if (Model.voorRaadBoeken.voorRaad > 10)
                     {
-                        <h2>On Stock</h2>
+                        <div class="voorRaadDiv">
+                            On Stock                      
+                        </div>
                     }
                     else if(Model.voorRaadBoeken.voorRaad <= 10)
                     {

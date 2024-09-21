@@ -18,24 +18,27 @@
 }
 
 .productDetailsDivMidLeft {
-    border: solid green;
     width: 50%;
     padding-top: 5vh;
 }
 
 .bookImage {
-    width: 60%; /* Vergroot de breedte van de afbeelding */
-    height: auto; /* Zorg ervoor dat de hoogte proportioneel blijft */
+    width: 60%; 
+    height: auto; 
     max-width: 100%;
     object-fit: contain;
 }
 
 .productDetailsDivMidRight {
-    border: solid gray;
     width: 50%;
     padding-top: 5vh;
 }
 
 .priceProduct{
     color: red;
+}
+
+.voorRaadDiv{
+    border: solid black 1px;
+
 }
