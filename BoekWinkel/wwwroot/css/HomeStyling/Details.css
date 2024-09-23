@@ -23,7 +23,7 @@
 }
 
 .bookImage {
-    width: 60%; 
+    width: 70%; 
     height: auto; 
     max-width: 100%;
     object-fit: contain;
@@ -40,8 +40,53 @@
 
 div.voorRaadDivDetailsView{
     width: 8vw;
-    border: solid black 2px;
+    border: solid 2px;
     text-align: center;
     display: flex;
     flex-direction: column;
+}
+
+.winkelMandButton {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    width: 8vw;
+    height: 4vh;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.verlangLijstButton {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    height: 4vh;
+    width: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.verlangLijstButton:hover, .winkelMandButton:hover{
+    background-color: #cccccc;
+    cursor: pointer; 
+}
+
+.IconDetails {
+    font-size: 24px;
+    color: black;
+}
+
+#MIJNP{
+    display: flex;
+}
+
+.backButton{
+    color: black;
+    text-decoration: none;
 }

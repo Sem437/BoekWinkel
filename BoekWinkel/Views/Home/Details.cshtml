@@ -24,32 +24,39 @@
             <h2><strong>Details</strong></h2>
             <p><strong>Author:</strong> @Model.BoekModel.BoekAuthor</p>
             <p><strong>Category:</strong> @Model.BoekModel.BoekCategory</p>
-            <p><strong>Description:</strong> @Model.BoekModel.BoekDescription</p>
-             <div>
+             <p>
                 @{
                     if (Model.voorRaadBoeken.voorRaad > 10)
                     {
-                        <div class="voorRaadDivDetailsView">
+                        <div class="voorRaadDivDetailsView" style="border: solid 2px darkgreen; color:darkgreen">
                             <strong>On Stock</strong>
                         </div>
                     }
                     else if(Model.voorRaadBoeken.voorRaad <= 10 && Model.voorRaadBoeken.voorRaad > 0)
                     {
-                        <div class="voorRaadDivDetailsView">
+                        <div class="voorRaadDivDetailsView" style="border: solid 2px orange; color:orange">
                             <strong>Low On Stock</strong>
                             @Model.voorRaadBoeken.voorRaad Left
                         </div>
                     }
                     else
                     {
-                        <div class="voorRaadDivDetailsView">
+                        <div class="voorRaadDivDetailsView" style="border: solid 2px red; color:red">
                             <strong>Sold out</strong>
                         </div>
                     }
                 }
-             </div>           
+             </p>       
+             <p> @Model.BoekModel.BoekDescription </p>
+             <p id="MIJNP">
+                 <button class="winkelMandButton">
+                    <ion-icon name="bag-add-outline" class="IconDetails"></ion-icon>
+                 </button>
+                 <button class="verlangLijstButton">
+                    <ion-icon name="heart-outline" class="IconDetails"></ion-icon>
+                 </button>
+             </p>
+            <p> <a asp-action="Index" class="backButton">Back</a> </p>
         </div>
     </div>
-
-    <a asp-action="Index" class="backButton">Back</a>
 </div>
