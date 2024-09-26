@@ -61,38 +61,39 @@ namespace BoekWinkel.Controllers
             if (ModelState.IsValid)
             {
 
-                if (boekModel.BoekImage == null && boekModel.BoekImageURL == null ||
-                    boekModel.BoekImage != null && boekModel.BoekImageURL != null)
+                if ((BoekImage == null && string.IsNullOrEmpty(boekModel.BoekImageURL)) ||
+                (BoekImage != null && !string.IsNullOrEmpty(boekModel.BoekImageURL)))
                 {
-                    return BadRequest();
+                    ModelState.AddModelError("", "Please provide either an image file or an image URL, but not both.");
+                    return View(boekModel);
                 }
-                else
+          
+                
+                // Verwerking van afbeelding als Base64-string
+                if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
                 {
-                    // Verwerking van afbeelding als Base64-string
-                    if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
+                    if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5mb
                     {
-                        if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5mb
+                        using (var memoryStream = new MemoryStream())
                         {
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                await BoekImage.CopyToAsync(memoryStream);
-                                byte[] fileBytes = memoryStream.ToArray();
-                                string base64String = Convert.ToBase64String(fileBytes);
-                                boekModel.BoekImage = base64String;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Afbeelding is te groot of geen afbeeldingstype");
+                            await BoekImage.CopyToAsync(memoryStream);
+                            byte[] fileBytes = memoryStream.ToArray();
+                            boekModel.BoekImage = Convert.ToBase64String(fileBytes);
                         }
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", "Image must be a valid image file and less than 5MB.");
+                        return View(boekModel);
+                    }
                 }
+                
 
                     // Voeg het boekmodel toe aan de database
                     _context.Add(boekModel);
                     await _context.SaveChangesAsync();
 
-                    // Nu het boek is opgeslagen, voeg het voorraaditem toe
+                    // Nu het boek is opgeslagen voeg het voorraaditem toe
                     var voorraad = new VoorRaadBoeken
                     {
                         boekId = boekModel.BoekId,
