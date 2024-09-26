@@ -87,6 +87,7 @@ namespace BoekWinkel.Controllers
                         }
                     }
                 }
+
                     // Voeg het boekmodel toe aan de database
                     _context.Add(boekModel);
                     await _context.SaveChangesAsync();
@@ -94,7 +95,7 @@ namespace BoekWinkel.Controllers
                     // Nu het boek is opgeslagen, voeg het voorraaditem toe
                     var voorraad = new VoorRaadBoeken
                     {
-                        boekId = boekModel.BoekId, // BoekId is nu beschikbaar
+                        boekId = boekModel.BoekId,
                         voorRaad = 0,
                         verkocht = 0,
                         geretourd = 0

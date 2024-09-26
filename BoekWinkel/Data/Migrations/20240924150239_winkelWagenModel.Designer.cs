@@ -4,6 +4,7 @@ using BoekWinkel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoekWinkel.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240924150239_winkelWagenModel")]
+    partial class winkelWagenModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,32 +88,6 @@ namespace BoekWinkel.Data.Migrations
                     b.HasIndex("boekId");
 
                     b.ToTable("VoorRaadBoeken");
-                });
-
-            modelBuilder.Entity("BoekWinkel.Models.Winkelwagen", b =>
-                {
-                    b.Property<int>("WinkelwagenId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WinkelwagenId"));
-
-                    b.Property<bool>("Betaald")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("BoekId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("InWinkelwagen")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("gebruikersId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("WinkelwagenId");
-
-                    b.ToTable("Winkelwagen");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

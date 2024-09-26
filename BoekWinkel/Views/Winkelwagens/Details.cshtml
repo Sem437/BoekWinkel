@@ -1,0 +1,43 @@
+﻿@model BoekWinkel.Models.Winkelwagen
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Winkelwagen</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.gebruikersId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.gebruikersId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BoekId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BoekId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InWinkelwagen)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InWinkelwagen)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Betaald)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Betaald)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.WinkelwagenId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

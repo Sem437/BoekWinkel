@@ -1,8 +1,13 @@
 using BoekWinkel.Data;
+using BoekWinkel.Data.Migrations;
 using BoekWinkel.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BoekWinkel.Controllers
 {
@@ -18,7 +23,7 @@ namespace BoekWinkel.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
+        {           
             return View(await _context.BoekModel.ToListAsync());
         }
 
@@ -45,7 +50,7 @@ namespace BoekWinkel.Controllers
                 BoekModel = boekDetails,
                 voorRaadBoeken = voorraadBoek
             };
-
+      
             return View(viewModel);
         }
 
@@ -58,6 +63,42 @@ namespace BoekWinkel.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+
+        //toevoegen aan winkelmand
+        // POST: Winkelwagens/Create
+        [HttpPost]
+        public async Task<IActionResult> add(int Id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account"); 
+            }
+
+
+            var winkelwagen = new Winkelwagen
+            {
+                gebruikersId = userId,
+                BoekId = Id,
+                InWinkelwagen = true, 
+                Betaald = false       
+            };
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(winkelwagen);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.Id = Id;
+
+            return View("Details", Id);
         }
     }
 }

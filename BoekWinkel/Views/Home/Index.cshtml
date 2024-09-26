@@ -11,7 +11,16 @@
         {
             <a href="home/details/@item.BoekId" class="BookBody">
                 <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" />
-                <div class="BookName">@item.BoekTitle</div>
+                <div class="BookName">                 
+                    @if( item.BoekTitle.Length >= 15)
+                    {
+                        @($"{item.BoekTitle.Substring(0, 15)}...")
+                    }
+                    else
+                    {
+                        @item.BoekTitle
+                    }
+                    </div>
                 <div class="BookPrice">€@item.BoekPrice</div>
             </a>
         }

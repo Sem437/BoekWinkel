@@ -48,15 +48,21 @@
                 }
              </p>       
              <p> @Model.BoekModel.BoekDescription </p>
-             <p id="MIJNP">
-                 <button class="winkelMandButton">
-                    <ion-icon name="bag-add-outline" class="IconDetails"></ion-icon>
-                 </button>
-                 <button class="verlangLijstButton">
-                    <ion-icon name="heart-outline" class="IconDetails"></ion-icon>
-                 </button>
+             <p>  
+                 <div style="display: flex">
+                    <form asp-action="add" asp-route-id="@Model.BoekModel.BoekId" method="post">
+                        <button class="winkelMandButton">
+                            <ion-icon name="bag-add-outline" class="IconDetails"></ion-icon>
+                        </button>
+                    </form>
+                    <form>
+                        <button class="verlangLijstButton">
+                            <ion-icon name="heart-outline" class="IconDetails"></ion-icon>
+                        </button>
+                    </form>
+                </div>                         
              </p>
-            <p> <a asp-action="Index" class="backButton">Back</a> </p>
+            <p> <a asp-action="Index" class="backButton">Back</a> </p>         
         </div>
     </div>
 </div>
