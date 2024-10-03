@@ -1,23 +1,54 @@
-﻿
-
-.winkelWagenItemsContainer {
+﻿.winkelWagenItemsContainer {
     margin-inline: 20vw;
-    border: solid 2px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.winkelWagenItems{
-    border: solid 2px red;
-    margin-block: 20px;
+    padding: 20px; 
+  
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 45%;
+    
+}
+
+.winkelWagenItems {
+    margin-block: 20px;
+    width: 100%;
+}
+
+.winkelwagen-item-kaart {
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    display: flex;
+}
+
+.winkelwagen-item-kaart-left{
+    margin-right: 50px;
+}
+
+.winkelwagen-item-kaart-right{
+    margin-right: 50px;
+    width: 100%;
+}
+
+.product-details-table{
+    width: 100%;
+    margin-top: 8vh;
+}
+
+.firstRow {
+    border-bottom: solid 2px black;
 }
 
 .boekIMG {
-    width: 10vw;
-    height: auto;
+    width: 12vw;
+    height: 18vw;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.winkelwagen-item-kaart strong { 
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
 }

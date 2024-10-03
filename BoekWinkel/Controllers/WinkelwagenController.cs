@@ -30,7 +30,8 @@ namespace BoekWinkel.Controllers
 
             //kijken of het ingelogde gebruikersId gelijk is met id in de DB en hij in je winkelmand staat 
             var winkelWagenItems = await _context.Winkelwagen
-                .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true)
+                .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true 
+                && w.AantalItems > 0 && w.Betaald == false)
                 .Include(w => w.Boek) // voegt het boekModel toe
                 .ToListAsync();
 
