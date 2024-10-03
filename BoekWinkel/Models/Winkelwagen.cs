@@ -14,8 +14,12 @@ namespace BoekWinkel.Models
         [ForeignKey("BoekId")]
         public int BoekId { get; set; }
 
+        public int AantalItems { get; set; } = 1;
+
         public bool InWinkelwagen { get; set; } = false;
 
         public bool Betaald { get; set; } = false;
+
+        public BoekModel Boek { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace BoekWinkel.Controllers
 
 
         //toevoegen aan winkelmand
-        // POST: Winkelwagens/Create
+        // POST: Winkelwagen/Create
         [HttpPost]
         public async Task<IActionResult> add(int Id)
         {
@@ -76,7 +76,7 @@ namespace BoekWinkel.Controllers
 
             if (userId == null)
             {
-                return RedirectToAction("Login", "Account"); 
+                return RedirectToAction("Identity","Account", "Login"); 
             }
 
 
@@ -98,7 +98,7 @@ namespace BoekWinkel.Controllers
             ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Id = Id;
 
-            return View("Details", Id);
+            return View("Details", new {id =Id });
         }
     }
 }

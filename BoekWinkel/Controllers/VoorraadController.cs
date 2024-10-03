@@ -19,7 +19,10 @@ namespace BoekWinkel.Controllers
         {
             _context = context;
         }
+
         [Authorize(Roles = "Admin")]
+
+
         // GET: Voorraad
         public async Task<IActionResult> Index()
         {

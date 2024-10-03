@@ -5,5 +5,7 @@
         public BoekModel BoekModel { get; set; }
 
         public VoorRaadBoeken voorRaadBoeken { get; set; }
+
+        public Winkelwagen Winkelwagen { get; set; }
     }
 }

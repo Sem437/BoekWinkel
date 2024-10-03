@@ -6,26 +6,47 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
+using BoekWinkel.ViewModels;
 using BoekWinkel.Models;
 
 namespace BoekWinkel.Controllers
 {
-    public class WinkelwagensController : Controller
+    public class WinkelwagenController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public WinkelwagensController(ApplicationDbContext context)
+        public WinkelwagenController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Winkelwagens
-        public async Task<IActionResult> Index()
+        // GET: Winkelwagen
+        public async Task<IActionResult> Index(string userId)
         {
-            return View(await _context.Winkelwagen.ToListAsync());
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            //kijken of het ingelogde gebruikersId gelijk is met id in de DB en hij in je winkelmand staat 
+            var winkelWagenItems = await _context.Winkelwagen
+                .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true)
+                .Include(w => w.Boek) // voegt het boekModel toe
+                .ToListAsync();
+
+            
+            decimal totalePrijs = winkelWagenItems.Sum(item => item.Boek.BoekPrice);
+
+            var WinkelwagenViewModel = new WinkelwagenViewModel
+            {
+                WinkelwagenItems = winkelWagenItems,
+                TotalePrijs = totalePrijs
+            };
+
+            return View(WinkelwagenViewModel);
         }
 
-        // GET: Winkelwagens/Details/5
+        // GET: Winkelwagen/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +55,7 @@ namespace BoekWinkel.Controllers
             }
 
             var winkelwagen = await _context.Winkelwagen
+                .Include(w => w.Boek)
                 .FirstOrDefaultAsync(m => m.WinkelwagenId == id);
             if (winkelwagen == null)
             {
@@ -43,18 +65,19 @@ namespace BoekWinkel.Controllers
             return View(winkelwagen);
         }
 
-        // GET: Winkelwagens/Create
+        // GET: Winkelwagen/Create
         public IActionResult Create()
         {
+            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor");
             return View();
         }
 
-        // POST: Winkelwagens/Create
+        // POST: Winkelwagen/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WinkelwagenId,gebruikersId,BoekId,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
+        public async Task<IActionResult> Create([Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
         {
             if (ModelState.IsValid)
             {
@@ -62,10 +85,11 @@ namespace BoekWinkel.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
             return View(winkelwagen);
         }
 
-        // GET: Winkelwagens/Edit/5
+        // GET: Winkelwagen/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,15 +102,16 @@ namespace BoekWinkel.Controllers
             {
                 return NotFound();
             }
+            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
             return View(winkelwagen);
         }
 
-        // POST: Winkelwagens/Edit/5
+        // POST: Winkelwagen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("WinkelwagenId,gebruikersId,BoekId,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
+        public async Task<IActionResult> Edit(int id, [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
         {
             if (id != winkelwagen.WinkelwagenId)
             {
@@ -113,10 +138,11 @@ namespace BoekWinkel.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
             return View(winkelwagen);
         }
 
-        // GET: Winkelwagens/Delete/5
+        // GET: Winkelwagen/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,6 +151,7 @@ namespace BoekWinkel.Controllers
             }
 
             var winkelwagen = await _context.Winkelwagen
+                .Include(w => w.Boek)
                 .FirstOrDefaultAsync(m => m.WinkelwagenId == id);
             if (winkelwagen == null)
             {
@@ -134,7 +161,7 @@ namespace BoekWinkel.Controllers
             return View(winkelwagen);
         }
 
-        // POST: Winkelwagens/Delete/5
+        // POST: Winkelwagen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,0 +1,24 @@
+﻿@model BoekWinkel.ViewModels.WinkelwagenViewModel
+
+<h2>Jouw Winkelwagen</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Boek</th>
+            <th>Prijs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.WinkelwagenItems)
+        {
+            <tr>
+               komt nog data in
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Totaal: €@Model.TotalePrijs.ToString("0.00")</h4>
+
+<a class="btn btn-primary" href="/Bestellen">Afrekenen</a>

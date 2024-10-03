@@ -21,8 +21,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="BoekId" class="control-label"></label>
-                <input asp-for="BoekId" class="form-control" />
+                <select asp-for="BoekId" class="form-control" asp-items="ViewBag.BoekId"></select>
                 <span asp-validation-for="BoekId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AantalItems" class="control-label"></label>
+                <input asp-for="AantalItems" class="form-control" />
+                <span asp-validation-for="AantalItems" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -45,6 +50,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

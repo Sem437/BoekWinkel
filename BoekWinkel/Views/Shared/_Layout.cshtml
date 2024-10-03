@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="~/css/HomeStyling/HomePage.css" asp-append-version="true" />
 
     @RenderSection("Styles", required: false)
+    @RenderSection("winkelWagenCSS", required: false)
 </head>
 <body>
     <header>
@@ -28,7 +30,7 @@
                     </div>
                 </div>
                 <div class="navBarTopDivs" id="navBarTopRight">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Winkelwagen" asp-action="Index" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
                         <ion-icon name="bag-check-outline" class="Icon"></ion-icon>
                     </a>
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">
