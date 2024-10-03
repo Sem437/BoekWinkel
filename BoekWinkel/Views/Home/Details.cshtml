@@ -53,7 +53,14 @@
                  <div style="display: flex">
                     <form asp-action="add" asp-route-id="@Model.BoekModel.BoekId" method="post">
                         <button class="winkelMandButton">
-                            <ion-icon name="bag-add-outline" class="IconDetails"></ion-icon>
+                            @if(Model.Winkelwagen.InWinkelwagen == false)
+                            {
+                                <ion-icon name="bag-add-outline" class="IconDetails"></ion-icon>
+                            }
+                            else
+                            {
+                                <ion-icon name="bag-check" class="IconDetails" style="color: green"></ion-icon>
+                            }
                         </button>
                     </form>
                     <form>

@@ -8,10 +8,8 @@ namespace BoekWinkel.Models
         [Key]
         public int WinkelwagenId { get; set; }
 
-        [ForeignKey("Id")]
         public string gebruikersId { get; set; }
 
-        [ForeignKey("BoekId")]
         public int BoekId { get; set; }
 
         public int AantalItems { get; set; } = 1;

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
+using System.Net;
 using System.Security.Claims;
 
 namespace BoekWinkel.Controllers
@@ -27,6 +28,8 @@ namespace BoekWinkel.Controllers
             return View(await _context.BoekModel.ToListAsync());
         }
 
+
+        //Details 
         public async Task<IActionResult> Details(int Id)
         {
             if(Id == 0) 
@@ -45,10 +48,14 @@ namespace BoekWinkel.Controllers
             var voorraadBoek = await _context.VoorRaadBoeken
                .FirstOrDefaultAsync(v => v.boekId == Id);
 
+            var winkelwagenItem = await _context.Winkelwagen
+                .FirstOrDefaultAsync(w => w.gebruikersId == User.FindFirstValue(ClaimTypes.NameIdentifier) && w.BoekId == Id);
+
             ViewModel viewModel = new ViewModel
             {
                 BoekModel = boekDetails,
-                voorRaadBoeken = voorraadBoek
+                voorRaadBoeken = voorraadBoek,
+                Winkelwagen = winkelwagenItem
             };
       
             return View(viewModel);
@@ -79,6 +86,13 @@ namespace BoekWinkel.Controllers
                 return RedirectToAction("Identity","Account", "Login"); 
             }
 
+            var inDB = _context.Winkelwagen
+                .FirstOrDefault(w => w.gebruikersId == userId && w.BoekId == Id);
+
+            if(inDB != null)
+            {
+                return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
+            }
 
             var winkelwagen = new Winkelwagen
             {
@@ -98,7 +112,7 @@ namespace BoekWinkel.Controllers
             ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Id = Id;
 
-            return View("Details", new {id =Id });
+            return RedirectToAction("Details", "Home", new { id = Id });
         }
     }
 }

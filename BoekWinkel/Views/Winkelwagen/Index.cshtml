@@ -17,13 +17,13 @@
                 <div class="winkelwagen-item-kaart-right">
                     <table class="product-details-table">
                         <tr class="firstRow">
-                            <th><strong>Title</strong></th>
+                            <th id="titleBoekTH"><strong>Title</strong></th>
                             <th><strong>Author</strong></th>
                             <th><strong>Price</strong></th>
                             <th><strong>Qauntity</strong></th>
                         </tr>
                         <tr>
-                            <td>@item.Boek.BoekTitle</td>                           
+                            <td id="titleBoekTD">@item.Boek.BoekTitle</td>
                             <td>@item.Boek.BoekAuthor</td>
                             <td>€@item.Boek.BoekPrice.ToString("0.00")</td>
                             <td>@item.AantalItems</td>

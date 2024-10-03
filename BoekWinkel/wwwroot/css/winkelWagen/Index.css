@@ -37,6 +37,20 @@
     border-bottom: solid 2px black;
 }
 
+.product-details-table tr td{
+    height: 10vh;
+    
+}
+
+#titleBoekTH {
+    width: 7vw;
+}
+
+#titleBoekTD {
+    text-align: center;
+    padding-right: 10px;
+}
+
 .boekIMG {
     width: 12vw;
     height: 18vw;
