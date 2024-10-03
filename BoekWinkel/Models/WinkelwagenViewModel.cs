@@ -6,6 +6,5 @@ namespace BoekWinkel.ViewModels
     {
         public List<Winkelwagen> WinkelwagenItems { get; set; }
         public decimal TotalePrijs { get; set; }
-        public BoekModel Boek { get; set; }
     }
 }
