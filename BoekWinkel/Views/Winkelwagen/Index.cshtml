@@ -18,15 +18,17 @@
                     <table class="product-details-table">
                         <tr class="firstRow">
                             <th id="titleBoekTH"><strong>Title</strong></th>
-                            <th><strong>Author</strong></th>
-                            <th><strong>Price</strong></th>
+                            <th id="authorBoekTH"><strong>Author</strong></th>
+                            <th class="priceBoekTHD"><strong>Price</strong></th>
                             <th><strong>Qauntity</strong></th>
                         </tr>
                         <tr>
                             <td id="titleBoekTD">@item.Boek.BoekTitle</td>
-                            <td>@item.Boek.BoekAuthor</td>
-                            <td>€@item.Boek.BoekPrice.ToString("0.00")</td>
-                            <td>@item.AantalItems</td>
+                            <td id="authorBoekTD">@item.Boek.BoekAuthor</td>
+                            <td class="priceBoekTHD">€@item.Boek.BoekPrice.ToString("0.00")</td>
+                            <td>
+                                <input type="number" value="@item.AantalItems" min="1" class="tableInput"/>
+                            </td>
                         </tr>                   
                     </table>
                 </div>               

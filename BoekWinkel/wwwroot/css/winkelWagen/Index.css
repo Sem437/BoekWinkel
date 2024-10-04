@@ -33,24 +33,6 @@
     margin-top: 8vh;
 }
 
-.firstRow {
-    border-bottom: solid 2px black;
-}
-
-.product-details-table tr td{
-    height: 10vh;
-    
-}
-
-#titleBoekTH {
-    width: 7vw;
-}
-
-#titleBoekTD {
-    text-align: center;
-    padding-right: 10px;
-}
-
 .boekIMG {
     width: 12vw;
     height: 18vw;
@@ -58,7 +40,38 @@
     border-radius: 5px;
 }
 
-.winkelwagen-item-kaart strong { 
+.firstRow {
+    border-bottom: solid 2px black;
+}
+
+#titleBoekTH {
+    width: 7vw;
+}
+
+
+#titleBoekTD {
+    text-align: center;
+}
+
+#authorBoekTH {
+    padding-left: 50px;
+}
+
+#authorBoekTD {
+    padding-left: 50px;
+}
+
+.priceBoekTHD{
+    border: solid 2px;
+    padding-right: 50px;
+}
+
+
+.tableInput {
+    border: solid 3px;
+}
+
+.winkelwagen-item-kaart strong {
     text-align: center;
 }
 
