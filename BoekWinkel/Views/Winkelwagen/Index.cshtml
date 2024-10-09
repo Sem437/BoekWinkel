@@ -19,15 +19,23 @@
                         <tr class="firstRow">
                             <th id="titleBoekTH"><strong>Title</strong></th>
                             <th id="authorBoekTH"><strong>Author</strong></th>
-                            <th class="priceBoekTHD"><strong>Price</strong></th>
-                            <th><strong>Qauntity</strong></th>
+                            <th id="priceBoekTH"><strong>Price</strong></th>
+                            <th id="quantityTH"><strong>Qauntity</strong></th>
                         </tr>
                         <tr>
                             <td id="titleBoekTD">@item.Boek.BoekTitle</td>
                             <td id="authorBoekTD">@item.Boek.BoekAuthor</td>
-                            <td class="priceBoekTHD">€@item.Boek.BoekPrice.ToString("0.00")</td>
+                            <td id="priceBoekTD">€@item.Boek.BoekPrice.ToString("0.00")</td>
+                            <td id="quantityTD">
+                                <form method="post" asp-controller="Winkelwagen" asp-action="edit" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@item.gebruikersId">
+                                    <input type="hidden" name="gebruikersId" value="@item.gebruikersId" />
+                                    <input type="hidden" name="InWinkelwagen" value="true" />
+                                    <input type="number" name="AantalItems" value="@item.AantalItems" min="1" class="tableInput" />
+                                    <input type="submit" value="Update" />
+                                </form>
+                            </td>
                             <td>
-                                <input type="number" value="@item.AantalItems" min="1" class="tableInput"/>
+                                <button>Deleted</button>
                             </td>
                         </tr>                   
                     </table>

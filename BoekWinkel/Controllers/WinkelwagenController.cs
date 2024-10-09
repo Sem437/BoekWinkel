@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
 using BoekWinkel.ViewModels;
 using BoekWinkel.Models;
+using System.Security.Claims;
 
 namespace BoekWinkel.Controllers
 {
@@ -91,11 +92,15 @@ namespace BoekWinkel.Controllers
         }
 
         // GET: Winkelwagen/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        
+        public async Task<IActionResult> Edit(int? id, string UserId)
         {
-            if (id == null)
+
+            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (loggedInUser == null)
             {
-                return NotFound();
+                return Redirect("/Identity/Account/Login");
             }
 
             var winkelwagen = await _context.Winkelwagen.FindAsync(id);
@@ -106,15 +111,16 @@ namespace BoekWinkel.Controllers
             ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
             return View(winkelwagen);
         }
+        
 
         // POST: Winkelwagen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
+        public async Task<IActionResult> Edit(int id, string UserId , [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
         {
-            if (id != winkelwagen.WinkelwagenId)
+            if (UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 return NotFound();
             }
