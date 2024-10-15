@@ -1,4 +1,5 @@
-﻿@model BoekWinkel.ViewModels.WinkelwagenViewModel
+﻿@using System.Security.Claims
+@model BoekWinkel.ViewModels.WinkelwagenViewModel
  
 @section Styles
 {
@@ -27,12 +28,16 @@
                             <td id="authorBoekTD">@item.Boek.BoekAuthor</td>
                             <td id="priceBoekTD">€@item.Boek.BoekPrice.ToString("0.00")</td>
                             <td id="quantityTD">
-                                <form method="post" asp-controller="Winkelwagen" asp-action="edit" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@item.gebruikersId">
+                                <form method="post" asp-controller="Winkelwagen" asp-action="Edit" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
+                                    <input type="hidden" name="WinkelwagenId" value="@item.WinkelwagenId" />
+                                    <input type="hidden" name="BoekId" value="@item.BoekId" />
                                     <input type="hidden" name="gebruikersId" value="@item.gebruikersId" />
                                     <input type="hidden" name="InWinkelwagen" value="true" />
-                                    <input type="number" name="AantalItems" value="@item.AantalItems" min="1" class="tableInput" />
+                                    <input type="hidden" name="Betaald" value="false" />
+
+                                    <input type="number" name="AantalItems" value="@item.AantalItems" class="tableInput" />
                                     <input type="submit" value="Update" />
-                                </form>
+                                </form>                          
                             </td>
                             <td>
                                 <button>Deleted</button>

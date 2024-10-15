@@ -91,50 +91,124 @@ namespace BoekWinkel.Controllers
             return View(winkelwagen);
         }
 
-        // GET: Winkelwagen/Edit/5
-        
+        //GET Edit
         public async Task<IActionResult> Edit(int? id, string UserId)
         {
-
-            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (loggedInUser == null)
+            if (id == null)
             {
-                return Redirect("/Identity/Account/Login");
+                return NotFound();
             }
 
+            // Haal het winkelwagenitem op met het meegegeven ID
             var winkelwagen = await _context.Winkelwagen.FindAsync(id);
             if (winkelwagen == null)
             {
                 return NotFound();
             }
-            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
+
+            // Geef het winkelwagenitem door aan de view om het formulier in te vullen
             return View(winkelwagen);
         }
-        
+
+
 
         // POST: Winkelwagen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string UserId , [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
+        public async Task<IActionResult> Edit(int id, string UserId, [Bind("WinkelwagenId,gebruikersId,BoekId,AantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
         {
-            if (UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (loggedInUser == null || UserId != loggedInUser)
+            {
+                return Unauthorized();
+            }
+            
+
+            if (id != winkelwagen.WinkelwagenId)
+            {
+                return BadRequest();
+            }
+
+            // Haal het huidige winkelwagen item op uit de database
+            var existingWinkelwagen = await _context.Winkelwagen.FindAsync(id);
+
+            if (existingWinkelwagen == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Werk de velden bij die aangepast zijn
+            existingWinkelwagen.AantalItems = winkelwagen.AantalItems;
+
+            // hij doet het alleen als het model niet valid is , maar de update werkt wel
+            if (!ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(winkelwagen);
+                    _context.Update(existingWinkelwagen);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index)); // Terug naar de winkelwagen indexpagina
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Winkelwagen.Any(e => e.WinkelwagenId == winkelwagen.WinkelwagenId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return View(winkelwagen); // Als de validatie faalt, blijf op de edit pagina
+        }
+
+
+        //oude post
+        /*
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, string UserId, [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
+        {
+            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (loggedInUser == null || UserId != loggedInUser)
+            {
+                return Unauthorized();
+            }
+
+            if (id != winkelwagen.WinkelwagenId)
+            {
+                return BadRequest();
+            }
+
+            // Haal het huidige winkelwagen item op uit de database
+            var existingWinkelwagen = await _context.Winkelwagen.FindAsync(id);
+
+            if (existingWinkelwagen == null)
+            {
+                return NotFound();
+            }
+
+            // Werk de velden bij die aangepast zijn
+            existingWinkelwagen.AantalItems = winkelwagen.AantalItems;
+
+            if (!ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(existingWinkelwagen);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!WinkelwagenExists(winkelwagen.WinkelwagenId))
+                    if (!_context.Winkelwagen.Any(e => e.WinkelwagenId == winkelwagen.WinkelwagenId))
                     {
                         return NotFound();
                     }
@@ -145,9 +219,11 @@ namespace BoekWinkel.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
-            return View(winkelwagen);
+
+            return View("Index", await _context.Winkelwagen.ToListAsync());
         }
+
+        */
 
         // GET: Winkelwagen/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -186,6 +262,29 @@ namespace BoekWinkel.Controllers
         private bool WinkelwagenExists(int id)
         {
             return _context.Winkelwagen.Any(e => e.WinkelwagenId == id);
+        }
+    }
+}
+
+
+public class WinkelwagenService
+{
+    private readonly ApplicationDbContext _context;
+
+    public WinkelwagenService(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    // Deze functie voert de update uit zonder een IActionResult
+    public void UpdateAantalItems(int winkelwagenId, int nieuwAantalItems)
+    {
+        var winkelwagen = _context.Winkelwagen.Find(winkelwagenId);
+
+        if (winkelwagen != null)
+        {
+            winkelwagen.AantalItems = nieuwAantalItems;
+            _context.SaveChanges(); // Voer de update uit in de database
         }
     }
 }
