@@ -91,7 +91,18 @@ namespace BoekWinkel.Controllers
 
             if(inDB != null)
             {
-                return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
+                // edit winkelwagen en zet InWinkelwagen true
+                if(inDB.InWinkelwagen == false)
+                {
+                    inDB.InWinkelwagen = true;
+                    _context.Update(inDB);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "winkelwagen", new { userId = userId });
+                }
+                else 
+                {
+                    return RedirectToAction("Index", "Winkelwagen", new { userId = userId });                  
+                }
             }
 
             var winkelwagen = new Winkelwagen
@@ -106,13 +117,13 @@ namespace BoekWinkel.Controllers
             {
                 _context.Add(winkelwagen);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
             }
 
             ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Id = Id;
 
-            return RedirectToAction("Details", "Home", new { id = Id });
+            return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
         }
     }
 }

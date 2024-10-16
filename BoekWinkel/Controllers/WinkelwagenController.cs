@@ -68,30 +68,6 @@ namespace BoekWinkel.Controllers
             return View(winkelwagen);
         }
 
-        // GET: Winkelwagen/Create
-        public IActionResult Create()
-        {
-            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor");
-            return View();
-        }
-
-        // POST: Winkelwagen/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(winkelwagen);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BoekId"] = new SelectList(_context.BoekModel, "BoekId", "BoekAuthor", winkelwagen.BoekId);
-            return View(winkelwagen);
-        }
-
         //GET Edit
         public async Task<IActionResult> Edit(int? id, string UserId)
         {
@@ -176,66 +152,38 @@ namespace BoekWinkel.Controllers
         }
 
 
-        // GET: Winkelwagen/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var winkelwagen = await _context.Winkelwagen
-                .Include(w => w.Boek)
-                .FirstOrDefaultAsync(m => m.WinkelwagenId == id);
-            if (winkelwagen == null)
-            {
-                return NotFound();
-            }
-
-            return View(winkelwagen);
-        }
+        
 
         // POST: Winkelwagen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(string.IsNullOrEmpty(UserId))
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
             var winkelwagen = await _context.Winkelwagen.FindAsync(id);
             if (winkelwagen != null)
             {
                 _context.Winkelwagen.Remove(winkelwagen);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         private bool WinkelwagenExists(int id)
         {
             return _context.Winkelwagen.Any(e => e.WinkelwagenId == id);
-        }
-    }
-}
-
-
-public class WinkelwagenService
-{
-    private readonly ApplicationDbContext _context;
-
-    public WinkelwagenService(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    // Deze functie voert de update uit zonder een IActionResult
-    public void UpdateAantalItems(int winkelwagenId, int nieuwAantalItems)
-    {
-        var winkelwagen = _context.Winkelwagen.Find(winkelwagenId);
-
-        if (winkelwagen != null)
-        {
-            winkelwagen.AantalItems = nieuwAantalItems;
-            _context.SaveChanges(); // Voer de update uit in de database
         }
     }
 }
