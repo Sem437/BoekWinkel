@@ -28,19 +28,28 @@
                             <td id="authorBoekTD">@item.Boek.BoekAuthor</td>
                             <td id="priceBoekTD">€@item.Boek.BoekPrice.ToString("0.00")</td>
                             <td id="quantityTD">
-                                <form method="post" asp-controller="Winkelwagen" asp-action="Edit" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
-                                    <input type="hidden" name="WinkelwagenId" value="@item.WinkelwagenId" />
-                                    <input type="hidden" name="BoekId" value="@item.BoekId" />
-                                    <input type="hidden" name="gebruikersId" value="@item.gebruikersId" />
-                                    <input type="hidden" name="InWinkelwagen" value="true" />
-                                    <input type="hidden" name="Betaald" value="false" />
+                                <div id="formContainer">
+                                    <form method="post" asp-controller="Winkelwagen" asp-action="Edit" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
+                                        <input type="hidden" name="WinkelwagenId" value="@item.WinkelwagenId" />
+                                        <input type="hidden" name="BoekId" value="@item.BoekId" />
+                                        <input type="hidden" name="gebruikersId" value="@item.gebruikersId" />
+                                        <input type="hidden" name="InWinkelwagen" value="true" />
+                                        <input type="hidden" name="Betaald" value="false" />
 
-                                    <input type="number" name="AantalItems" value="@item.AantalItems" class="tableInput" />
-                                    <input type="submit" value="Update" />
-                                </form>                          
-                            </td>
+                                        <input type="number" name="AantalItems" value="@item.AantalItems" class="tableInput" min="1" />
+                                        <button type="submit" class="submit-button">
+                                            <ion-icon name="create" style="font-size: 22px;"></ion-icon>
+                                        </button>                                 
+                                    </form>
+                                </div>
+                                                  
+                            </td>                        
                             <td>
-                                <button>Deleted</button>
+                                <form method="post" asp-action="Delete" asp-route-id="@item.WinkelwagenId" asp-route-UserId="@item.gebruikersId">
+                                    <button type="submit" class="submit-button">
+                                        <ion-icon name="close-circle-outline" style="font-size: 22px;"></ion-icon>
+                                    </button>
+                                </form>                               
                             </td>
                         </tr>                   
                     </table>

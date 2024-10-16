@@ -1,7 +1,6 @@
 ﻿.winkelWagenItemsContainer {
     margin-inline: 20vw;
     padding: 20px; 
-  
     display: flex;
     flex-direction: column;
     
@@ -82,7 +81,15 @@
 #quantityTD {
     border: none 3px;
     padding-left: 50px;
-    width: 5vw;
+    width: 10vw;
+}
+
+#formContainer
+{
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .tableInput {
@@ -96,5 +103,23 @@
 
 h2 {
     text-align: center;
-   
+}
+
+
+/*submit knop styling*/
+
+.submit-button {
+    background: none; 
+    border: none;
+    cursor: pointer; 
+
+}
+
+.submit-button ion-icon {
+    color: black; 
+    transition: color 0.3s; 
+}
+
+.submit-button:hover ion-icon {
+    color: blue; 
 }

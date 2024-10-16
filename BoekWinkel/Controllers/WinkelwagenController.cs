@@ -36,8 +36,9 @@ namespace BoekWinkel.Controllers
                 .Include(w => w.Boek) // voegt het boekModel toe
                 .ToListAsync();
 
-            
-            decimal totalePrijs = winkelWagenItems.Sum(item => item.Boek.BoekPrice);
+            int totaalAantalItems = winkelWagenItems.Sum(item => item.AantalItems);
+
+            decimal totalePrijs = winkelWagenItems.Sum(item => item.AantalItems * item.Boek.BoekPrice);
 
             var WinkelwagenViewModel = new WinkelwagenViewModel
             {
@@ -141,8 +142,13 @@ namespace BoekWinkel.Controllers
                 return NotFound();
             }
 
-            // Werk de velden bij die aangepast zijn
+            
             existingWinkelwagen.AantalItems = winkelwagen.AantalItems;
+
+            if(winkelwagen.AantalItems < 0)
+            {
+                return BadRequest();
+            }
 
             // hij doet het alleen als het model niet valid is , maar de update werkt wel
             if (!ModelState.IsValid)
@@ -151,7 +157,7 @@ namespace BoekWinkel.Controllers
                 {
                     _context.Update(existingWinkelwagen);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index)); // Terug naar de winkelwagen indexpagina
+                    return RedirectToAction("Index", new { UserId = UserId}); // Terug naar de winkelwagen indexpagina
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -169,61 +175,6 @@ namespace BoekWinkel.Controllers
             return View(winkelwagen); // Als de validatie faalt, blijf op de edit pagina
         }
 
-
-        //oude post
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string UserId, [Bind("WinkelwagenId,gebruikersId,BoekId,aantalItems,InWinkelwagen,Betaald")] Winkelwagen winkelwagen)
-        {
-            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (loggedInUser == null || UserId != loggedInUser)
-            {
-                return Unauthorized();
-            }
-
-            if (id != winkelwagen.WinkelwagenId)
-            {
-                return BadRequest();
-            }
-
-            // Haal het huidige winkelwagen item op uit de database
-            var existingWinkelwagen = await _context.Winkelwagen.FindAsync(id);
-
-            if (existingWinkelwagen == null)
-            {
-                return NotFound();
-            }
-
-            // Werk de velden bij die aangepast zijn
-            existingWinkelwagen.AantalItems = winkelwagen.AantalItems;
-
-            if (!ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(existingWinkelwagen);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Winkelwagen.Any(e => e.WinkelwagenId == winkelwagen.WinkelwagenId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View("Index", await _context.Winkelwagen.ToListAsync());
-        }
-
-        */
 
         // GET: Winkelwagen/Delete/5
         public async Task<IActionResult> Delete(int? id)
