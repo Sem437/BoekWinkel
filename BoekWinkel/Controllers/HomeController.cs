@@ -1,6 +1,7 @@
 using BoekWinkel.Data;
 using BoekWinkel.Data.Migrations;
 using BoekWinkel.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace BoekWinkel.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<HomeController> _logger;
-
+       
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
@@ -89,6 +90,16 @@ namespace BoekWinkel.Controllers
             var inDB = _context.Winkelwagen
                 .FirstOrDefault(w => w.gebruikersId == userId && w.BoekId == Id);
 
+            var voorRaad = _context.VoorRaadBoeken
+                .Where(v => v.boekId == Id)
+                .Select(v => v.voorRaad)
+                .FirstOrDefault();
+
+            if(voorRaad <= 0)
+            {             
+                return RedirectToAction("details", new {Id = Id});
+            }
+
             if(inDB != null)
             {
                 // edit winkelwagen en zet InWinkelwagen true
@@ -98,7 +109,7 @@ namespace BoekWinkel.Controllers
                     _context.Update(inDB);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "winkelwagen", new { userId = userId });
-                }
+                }                
                 else 
                 {
                     return RedirectToAction("Index", "Winkelwagen", new { userId = userId });                  

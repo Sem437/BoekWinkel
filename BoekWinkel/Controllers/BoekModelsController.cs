@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
 using BoekWinkel.Models;
 using BoekWinkel.Data.Migrations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoekWinkel.Controllers
 {
@@ -19,6 +20,8 @@ namespace BoekWinkel.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Admin")]
 
         // GET: BoekModels
         public async Task<IActionResult> Index()
