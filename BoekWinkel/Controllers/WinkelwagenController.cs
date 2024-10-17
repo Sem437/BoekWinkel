@@ -47,47 +47,7 @@ namespace BoekWinkel.Controllers
             };
 
             return View(WinkelwagenViewModel);
-        }
-
-        // GET: Winkelwagen/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var winkelwagen = await _context.Winkelwagen
-                .Include(w => w.Boek)
-                .FirstOrDefaultAsync(m => m.WinkelwagenId == id);
-            if (winkelwagen == null)
-            {
-                return NotFound();
-            }
-
-            return View(winkelwagen);
-        }
-
-        //GET Edit
-        public async Task<IActionResult> Edit(int? id, string UserId)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            // Haal het winkelwagenitem op met het meegegeven ID
-            var winkelwagen = await _context.Winkelwagen.FindAsync(id);
-            if (winkelwagen == null)
-            {
-                return NotFound();
-            }
-
-            // Geef het winkelwagenitem door aan de view om het formulier in te vullen
-            return View(winkelwagen);
-        }
-
-
+        }  
 
         // POST: Winkelwagen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -126,6 +86,22 @@ namespace BoekWinkel.Controllers
                 return BadRequest();
             }
 
+            var voorraadId = _context.VoorRaadBoeken
+                .Where(v => v.boekId == id)
+                .Select(v => v.voorraadId)
+                .FirstOrDefault();
+            
+            var voorRaad = _context.VoorRaadBoeken
+                .Where(v => v.voorraadId == voorraadId)
+                .Select(v => v.voorRaad)
+                .FirstOrDefault();
+
+            if(winkelwagen.AantalItems < voorRaad)
+            {
+                return BadRequest();
+                //return RedirectToAction("Index", new {UserId = UserId});
+            }
+
             // hij doet het alleen als het model niet valid is , maar de update werkt wel
             if (!ModelState.IsValid)
             {
@@ -149,10 +125,7 @@ namespace BoekWinkel.Controllers
             }
 
             return View(winkelwagen); // Als de validatie faalt, blijf op de edit pagina
-        }
-
-
-        
+        }        
 
         // POST: Winkelwagen/Delete/5
         [HttpPost, ActionName("Delete")]
