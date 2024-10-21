@@ -1,16 +1,18 @@
 ﻿@model BoekWinkel.Models.BoekModel
 
+@section boekModelEdit{
+    <link rel="stylesheet" href="~/css/BoekModel/edit.css" />
+}
+
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>BoekModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="editContainer">
+    <h1>Edit book</h1>
+    <div class="">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BoekId" />
@@ -36,7 +38,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="BoekCategory" class="control-label"></label>
-                <input asp-for="BoekCategory" class="form-control" />
+                <select asp-for="BoekCategory" class="form-control">
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Horror">Horror</option>
+                    <option value="History">History</option>
+                    <option value="Self-Help">Self-Help</option>
+                    <option value="Children's">Children's</option>
+                    <option value="Poetry">Poetry</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Young Adult">Young Adult</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Cooking">Cooking</option>
+                    <option value="Graphic Novels">Graphic Novels</option>
+                    <option value="Classics">Classics</option>
+                </select>
                 <span asp-validation-for="BoekCategory" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,7 +67,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="BoekImage" class="control-label"></label>
-                <input asp-for="BoekImage" class="form-control" />
+                <input asp-for="BoekImage" type="file" class="form-control" id="boekIMGinp" />
                 <span asp-validation-for="BoekImage" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -54,10 +75,11 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div>
+        <a asp-action="Index">
+            <ion-icon name="arrow-back-outline" class="Icon"></ion-icon>
+        </a>
+    </div>
 </div>
 
 @section Scripts {

@@ -1,0 +1,22 @@
+﻿
+.boekModelContainer {
+    margin-inline: 20vw;
+}
+
+.boekModelContainerTop {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.AddLink {
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+}
+
+.boekDS {
+    overflow-y: scroll;
+    height: 7vh;
+    width: 15vw;
+}

@@ -90,15 +90,15 @@ namespace BoekWinkel.Controllers
                 .Where(v => v.boekId == id)
                 .Select(v => v.voorraadId)
                 .FirstOrDefault();
-            
+
             var voorRaad = _context.VoorRaadBoeken
                 .Where(v => v.voorraadId == voorraadId)
                 .Select(v => v.voorRaad)
                 .FirstOrDefault();
 
-            if(winkelwagen.AantalItems < voorRaad)
-            {
-                return BadRequest();
+            if (voorRaad != null && winkelwagen.AantalItems > voorRaad)
+            {               
+                //return Unauthorized();
                 //return RedirectToAction("Index", new {UserId = UserId});
             }
 

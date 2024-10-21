@@ -1,88 +1,102 @@
 ﻿@model IEnumerable<BoekWinkel.Models.BoekModel>
 
+@section boekmodelStyle
+{
+    <link rel="stylesheet" href="~/css/BoekModel/Index.css"/>
+}
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="boekModelContainer">
+    <div class="boekModelContainerTop">
+        <div>
+            <a asp-action="Create" class="AddLink">
+                <ion-icon name="add-circle-outline" class="AddLink"></ion-icon>
+            </a>
+        </div>
+        <div>
+            Add book
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekAuthor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekCategory)
+                </th>        
+                <th>
+                    @Html.DisplayNameFor(model => model.BoekImage)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BoekTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BoekAuthor)
+                    </td>
+                    <td>
+                        <div class="boekDS">
+                            @Html.DisplayFor(modelItem => item.BoekDescription)
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BoekPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BoekCategory)
+                    </td>                
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.BoekImage))
+                        {
+                            <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" style="max-width: 100px;" />
+                        }
+                        else
+                        {
+                            string leeg = "Leeg";
+                            @Html.DisplayFor(modelItem => leeg)                            
+                        }
+                    </td>
+                    <td>
+                        <p>
+                            <a asp-action="Edit" asp-route-id="@item.BoekId">
+                                <ion-icon name="create-outline" class="Icon"></ion-icon>
+                            </a> 
+                        </p>
+                        <p>
+                            <a asp-action="Details" asp-route-id="@item.BoekId">
+                                <ion-icon name="information-circle-outline" class="Icon"></ion-icon>
+                            </a> 
+                        </p>
+                        <p>
+                            <a asp-action="Delete" asp-route-id="@item.BoekId">
+                                <ion-icon name="trash-outline" class="Icon"></ion-icon>
+                            </a>
+                        </p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekAuthor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekImageURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BoekImage)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekAuthor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoekCategory)
-            </td>
-            <td>
-                @if(!string.IsNullOrEmpty(item.BoekImageURL))
-                {
-                     <a href="@item.BoekImageURL"> Afbeelding </a>
-                }
-                else
-                {
-                    string leeg = "Leeg";
-                     @Html.DisplayFor(modelItem => leeg);
-                }
-            </td>
-            <td>                
-                @if(!string.IsNullOrEmpty(item.BoekImage))
-                {
-                     <img src="data:image/jpeg;base64,@item.BoekImage" alt="Boek afbeelding" style="max-width: 100px;"/>
-                }
-                else
-                {
-                     string leeg = "Leeg";
-                     @Html.DisplayFor(modelItem => leeg);
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BoekId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BoekId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BoekId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</div>

@@ -139,7 +139,7 @@ namespace BoekWinkel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekWinkel.Models.BoekModel boekModel)
+        public async Task<IActionResult> Edit(int id, [Bind("BoekId,BoekTitle,BoekAuthor,BoekDescription,BoekPrice,BoekCategory,BoekImageURL,BoekImage")] BoekWinkel.Models.BoekModel boekModel, IFormFile BoekImage)
         {
             if (id != boekModel.BoekId)
             {
@@ -148,6 +148,26 @@ namespace BoekWinkel.Controllers
 
             if (ModelState.IsValid)
             {
+                // Verwerking van afbeelding als Base64-string
+                if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
+                {
+                    if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5mb
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await BoekImage.CopyToAsync(memoryStream);
+                            byte[] fileBytes = memoryStream.ToArray();
+                            boekModel.BoekImage = Convert.ToBase64String(fileBytes);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Image must be a valid image file and less than 5MB.");
+                        return View(boekModel);
+                    }
+                }
+
+
                 try
                 {
                     _context.Update(boekModel);
@@ -166,7 +186,8 @@ namespace BoekWinkel.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(boekModel);
+            
+            return RedirectToAction("Index");
         }
 
         // GET: BoekModels/Delete/5
