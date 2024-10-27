@@ -7,5 +7,7 @@
         public VoorRaadBoeken voorRaadBoeken { get; set; }
 
         public Winkelwagen Winkelwagen { get; set; }
+
+        //public VerlanglijstModel VerlanglijstModel { get; set;}
     }
 }

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BoekWinkel.Models.VerlanglijstModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GebruikersId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpVerlanglijst)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GebruikersId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpVerlanglijst)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.VerlanglijstId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.VerlanglijstId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.VerlanglijstId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

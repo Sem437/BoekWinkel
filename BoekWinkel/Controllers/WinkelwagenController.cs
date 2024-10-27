@@ -29,6 +29,13 @@ namespace BoekWinkel.Controllers
                 return Redirect("/Identity/Account/Login");
             }
 
+            string loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (loggedInUser == null || loggedInUser != userId) 
+            {
+                return Unauthorized();
+            }
+
             //kijken of het ingelogde gebruikersId gelijk is met id in de DB en hij in je winkelmand staat 
             var winkelWagenItems = await _context.Winkelwagen
                 .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true 
