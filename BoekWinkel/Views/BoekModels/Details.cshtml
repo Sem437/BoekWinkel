@@ -5,13 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+@section boekmodelStyleEditPage
+{
+    <link rel="stylesheet" href="~/css/BoekModel/details.css" />
+}
 
-<div>
-    <h4>BoekModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+
+<div class="containerDetailsBoekModel">
+    <h1>Details</h1>
+    <div>
+        <dt>
             @Html.DisplayNameFor(model => model.BoekTitle)
         </dt>
         <dd class = "col-sm-10">
@@ -40,22 +43,14 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.BoekCategory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BoekImageURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BoekImageURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BoekImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BoekImage)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BoekId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        </dd>     
+    </div>
+    <div>
+        <a asp-action="Index">
+            <ion-icon name="arrow-back-outline" class="Icon"></ion-icon>
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model?.BoekId">
+            <ion-icon name="create-outline" class="Icon"></ion-icon>
+        </a>
+    </div>
 </div>
