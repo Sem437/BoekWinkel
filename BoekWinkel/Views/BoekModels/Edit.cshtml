@@ -13,7 +13,7 @@
 <div class="editContainer">
     <h1>Edit book</h1>
     <div class="">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BoekId" />
             <div class="form-group">
@@ -59,15 +59,10 @@
                     <option value="Classics">Classics</option>
                 </select>
                 <span asp-validation-for="BoekCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BoekImageURL" class="control-label"></label>
-                <input asp-for="BoekImageURL" class="form-control" />
-                <span asp-validation-for="BoekImageURL" class="text-danger"></span>
-            </div>
+            </div>                 
             <div class="form-group">
                 <label asp-for="BoekImage" class="control-label"></label>
-                <input asp-for="BoekImage" type="file" class="form-control" id="boekIMGinp" />
+                <input asp-for="BoekImage" type="file" class="form-control" id="boekIMGinp" name="BoekImage" />
                 <span asp-validation-for="BoekImage" class="text-danger"></span>
             </div>
             <div class="form-group">

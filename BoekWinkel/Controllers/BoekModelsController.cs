@@ -131,6 +131,15 @@ namespace BoekWinkel.Controllers
             {
                 return NotFound();
             }
+
+            // Als er geen nieuwe afbeelding is geüpload, behoud dan de bestaande afbeelding.
+            var existingBoek = await _context.BoekModel.AsNoTracking().FirstOrDefaultAsync(b => b.BoekId == id);
+            if (existingBoek != null)
+            {
+                boekModel.BoekImage = existingBoek.BoekImage;
+                ViewBag.boekIMG = existingBoek.BoekImage;
+            }
+
             return View(boekModel);
         }
 
@@ -146,12 +155,15 @@ namespace BoekWinkel.Controllers
                 return NotFound();
             }
 
+            // Verwijder BoekImage uit ModelState om de required-validatie te omzeilen
+            ModelState.Remove("BoekImage");
+
             if (ModelState.IsValid)
             {
-                // Verwerking van afbeelding als Base64-string
-                if (BoekImage != null && BoekImage.Length > 0 && boekModel.BoekImageURL == null)
+                // Verwerking van afbeelding als Base64-string, alleen als er een nieuwe afbeelding is geüpload
+                if (BoekImage != null && BoekImage.Length > 0)
                 {
-                    if (BoekImage.ContentType.StartsWith("image/") && BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5mb
+                    if (BoekImage.Length <= 5 * 1024 * 1024) // max grote van afbeelding is 5MB
                     {
                         using (var memoryStream = new MemoryStream())
                         {
@@ -165,8 +177,16 @@ namespace BoekWinkel.Controllers
                         ModelState.AddModelError("", "Image must be a valid image file and less than 5MB.");
                         return View(boekModel);
                     }
+                }            
+                else
+                {
+                    // Als er geen nieuwe afbeelding is geüpload, behoud dan de bestaande afbeelding.
+                    var existingBoek = await _context.BoekModel.AsNoTracking().FirstOrDefaultAsync(b => b.BoekId == id);
+                    if (existingBoek != null)
+                    {
+                        boekModel.BoekImage = existingBoek.BoekImage;
+                    }
                 }
-
 
                 try
                 {
@@ -184,11 +204,15 @@ namespace BoekWinkel.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            
-            return RedirectToAction("Index");
+
+            // Als het model niet geldig is, terugkeren naar de edit-pagina met foutmeldingen
+            return View(boekModel);
         }
+
+
 
         // GET: BoekModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
