@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoekWinkel.Data;
 using BoekWinkel.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace BoekWinkel.Controllers
 {
@@ -19,28 +21,52 @@ namespace BoekWinkel.Controllers
             _context = context;
         }
 
+   
         // GET: Wishlist
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? userId)
         {
-            return View(await _context.VerlanglijstModel.ToListAsync());
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            string loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (loggedInUser == null || loggedInUser != userId)
+            {
+                return Unauthorized();
+            }
+
+            var userWishList = await _context.VerlanglijstModel
+                .Where(u => u.GebruikersId == userId)
+                .Where(u => u.OpVerlanglijst == true)
+                .ToListAsync();
+
+            return View(userWishList);
         }
 
+
         // GET: Wishlist/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? userId)
         {
-            if (id == null)
+            if (userId == null)
             {
                 return NotFound();
             }
 
-            var verlanglijstModel = await _context.VerlanglijstModel
-                .FirstOrDefaultAsync(m => m.VerlanglijstId == id);
-            if (verlanglijstModel == null)
+            string loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(loggedInUser == null || loggedInUser != userId)
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            return View(verlanglijstModel);
+            var userWishList = await _context.VerlanglijstModel
+                .Where(u => u.GebruikersId == userId)
+                .Where(u => u.OpVerlanglijst == true)
+                .ToListAsync();
+
+            return View(userWishList);
         }
 
         // GET: Wishlist/Create

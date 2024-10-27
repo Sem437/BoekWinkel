@@ -1,37 +1,18 @@
-﻿@model BoekWinkel.Models.VerlanglijstModel
+﻿@model IEnumerable<BoekWinkel.Models.VerlanglijstModel>
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>VerlanglijstModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GebruikersId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GebruikersId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OpVerlanglijst)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OpVerlanglijst)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.VerlanglijstId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="wishlistDetailsContainer">
+    <h1>Wishlist</h1>
+    @Html.DisplayNameFor(model => model.GebruikersId)
+    @Html.DisplayNameFor(model => model.ProductId)
+    @foreach(var item in Model)
+    {
+        <p>@Html.DisplayFor(modelItem => item.GebruikersId)</p>        
+        <p>@Html.DisplayFor(modelItem => item.ProductId)</p>
+    }
 </div>

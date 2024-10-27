@@ -8,6 +8,6 @@
 
         public Winkelwagen Winkelwagen { get; set; }
 
-        //public VerlanglijstModel VerlanglijstModel { get; set;}
+        public VerlanglijstModel VerlanglijstModel { get; set;}
     }
 }
