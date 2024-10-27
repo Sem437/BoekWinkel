@@ -86,20 +86,17 @@ namespace BoekWinkel.Controllers
                 return BadRequest();
             }
 
-            var voorraadId = _context.VoorRaadBoeken
-                .Where(v => v.boekId == id)
-                .Select(v => v.voorraadId)
-                .FirstOrDefault();
+            // Hier halen we de voorraad op door middel van een join
+            var voorraadInfo = await (
+                from voorraad in _context.VoorRaadBoeken
+                where voorraad.boekId == winkelwagen.BoekId
+                select voorraad.voorRaad
+            ).FirstOrDefaultAsync();
 
-            var voorRaad = _context.VoorRaadBoeken
-                .Where(v => v.voorraadId == voorraadId)
-                .Select(v => v.voorRaad)
-                .FirstOrDefault();
-
-            if (voorRaad != null && winkelwagen.AantalItems > voorRaad)
+            if (winkelwagen.AantalItems > voorraadInfo)
             {               
                 //return Unauthorized();
-                //return RedirectToAction("Index", new {UserId = UserId});
+                return RedirectToAction("Index", new {UserId = UserId});
             }
 
             // hij doet het alleen als het model niet valid is , maar de update werkt wel
