@@ -1,0 +1,58 @@
+﻿/* Main container for wishlist */
+.wishlistDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-inline: 20vw;
+}
+
+/* Grid layout for max 2 items per row */
+.wishlistGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* Individual wishlist card styling */
+.wishlistCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.CardBody {
+    text-decoration:none;
+    background-color: #f2f2f2;
+
+}
+/* Image styling */
+.wishlistCard img {
+    width: 90%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+    /* Title and price text */
+    .wishlistCard h4 {
+        font-size: 1.2rem;
+        color: #333;
+        margin: 0.5rem 0;
+        font-weight: 600;
+    }
+
+    .wishlistCard p {
+        font-size: 1rem;
+        color: #666;
+        margin: 0.3rem 0 1rem;
+    }
+
+/* Add to cart button styling */
+.addCartButton {
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

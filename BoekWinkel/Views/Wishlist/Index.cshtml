@@ -1,15 +1,31 @@
 ﻿@model IEnumerable<BoekWinkel.Models.VerlanglijstModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Wishlist";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section wishlistIndex {
+    <link rel="stylesheet" href="~/css/Wishlist/Index.css" />
+}
 
 <div class="wishlistDetailsContainer">
     <h1>Wishlist</h1>
-    @foreach (var item in Model)
-    {
-        
-    }
+    <div class="wishlistGrid">
+        @foreach (var item in Model)
+        {
+            <div class="wishlistCard">
+                <a asp-controller="home" asp-action="details" asp-route-Id="@item.Boek.BoekId" class="CardBody">
+                    <img src="data:image/jpeg;base64,@item.Boek.BoekImage" alt="Boek afbeelding" />
+                    <h4>@item.Boek.BoekTitle</h4>
+                    <p>€@item.Boek.BoekPrice</p>
+                    <form asp-controller="home" asp-action="add" asp-route-id="@item.Boek.BoekId" method="post">
+                        <button class="addCartButton">
+                            <ion-icon name="bag-add-outline" class="IconDetails" style="color:black"></ion-icon>                       
+                        </button>
+                    </form>
+                </a>
+            </div>
+        }
+    </div>
 </div>
