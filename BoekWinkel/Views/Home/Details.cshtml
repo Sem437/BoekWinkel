@@ -63,7 +63,10 @@
                             }
                         </button>
                     </form>
-                    <form>
+                    <form asp-action="AddToList" asp-route-Id="@ViewBag.ProductId">
+                        <input type="hidden" name="GebruikersId" value="@ViewBag.gebruikersId" />
+                        <input type="hidden" name="ProductId" value="@ViewBag.ProductId" />
+                        <input type="hidden" name="OpVerlanglijst" value="true" />
                         <button class="verlangLijstButton">
                             <ion-icon name="heart-outline" class="IconDetails"></ion-icon>
                         </button>

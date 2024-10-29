@@ -45,6 +45,12 @@ namespace BoekWinkel.Controllers
             {
                 return NotFound(); 
             }
+            
+            if(User.Identity.IsAuthenticated)
+            {
+                ViewBag.gebruikersId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                ViewBag.ProductId = Id;
+            }
 
             var voorraadBoek = await _context.VoorRaadBoeken
                .FirstOrDefaultAsync(v => v.boekId == Id);
@@ -135,6 +141,40 @@ namespace BoekWinkel.Controllers
             ViewBag.Id = Id;
 
             return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
+        }
+
+        //toevoegen aan verlanglijst
+        // POST: Wishlist/Create
+        [HttpPost("home/AddToList")]
+        public async Task<IActionResult> AddToList(int Id) 
+        {                      
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return RedirectToAction("Identity", "Account", "Login");
+            }
+
+            // Haal de waarden uit de Request.Form
+            var gebruikersId = Request.Form["GebruikersId"];
+            var productId = Request.Form["ProductId"];
+            var opVerlanglijst = bool.Parse(Request.Form["OpVerlanglijst"]);
+
+            var verlanglijstModel = new VerlanglijstModel
+            {
+                GebruikersId = gebruikersId,
+                ProductId = int.Parse(productId),
+                OpVerlanglijst = opVerlanglijst
+            };           
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(verlanglijstModel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Whislist", new {userId = gebruikersId});
+            }
+
+            return RedirectToAction("details", new {Id = Id});
         }
     }
 }
