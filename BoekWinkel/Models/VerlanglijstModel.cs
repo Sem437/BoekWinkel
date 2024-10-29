@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoekWinkel.Models
 {
@@ -15,5 +16,8 @@ namespace BoekWinkel.Models
 
         [Required]
         public bool OpVerlanglijst { get; set; } = false;
+
+        [ForeignKey(nameof(ProductId))]
+        public BoekModel Boek { get; set; }
     }
 }

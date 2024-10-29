@@ -37,10 +37,11 @@ namespace BoekWinkel.Controllers
                 return Unauthorized();
             }
 
-            var userWishList = await _context.VerlanglijstModel
+            var userWishList = await _context.VerlanglijstModel                
                 .Where(u => u.GebruikersId == userId)
-                .Where(u => u.OpVerlanglijst == true)
-                .ToListAsync();
+                .Where(u => u.OpVerlanglijst == true)   
+                .Include(u => u.Boek)
+                .ToListAsync();           
 
             return View(userWishList);
         }

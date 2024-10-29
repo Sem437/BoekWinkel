@@ -8,11 +8,8 @@
 
 <div class="wishlistDetailsContainer">
     <h1>Wishlist</h1>
-    @Html.DisplayNameFor(model => model.GebruikersId)
-    @Html.DisplayNameFor(model => model.ProductId)
-    @foreach(var item in Model)
+    @foreach (var item in Model)
     {
-        <p>@Html.DisplayFor(modelItem => item.GebruikersId)</p>        
-        <p>@Html.DisplayFor(modelItem => item.ProductId)</p>
+        
     }
 </div>
