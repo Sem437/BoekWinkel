@@ -176,6 +176,23 @@ namespace BoekWinkel.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: Wishlist/Remove/5
+        [HttpPost, ActionName("Remove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var verlanglijstModel = await _context.VerlanglijstModel.FindAsync(id);
+            if (verlanglijstModel != null)
+            {
+                _context.VerlanglijstModel.Remove(verlanglijstModel);
+            }
+
+            var logedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { userId =logedInUser });
+        }
+
         private bool VerlanglijstModelExists(int id)
         {
             return _context.VerlanglijstModel.Any(e => e.VerlanglijstId == id);

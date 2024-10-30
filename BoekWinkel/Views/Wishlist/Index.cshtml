@@ -19,11 +19,18 @@
                     <img src="data:image/jpeg;base64,@item.Boek.BoekImage" alt="Boek afbeelding" />
                     <h4>@item.Boek.BoekTitle</h4>
                     <p>€@item.Boek.BoekPrice</p>
-                    <form asp-controller="home" asp-action="add" asp-route-id="@item.Boek.BoekId" method="post">
-                        <button class="addCartButton">
-                            <ion-icon name="bag-add-outline" class="IconDetails" style="color:black"></ion-icon>                       
-                        </button>
-                    </form>
+                    <div class="btmDIV">
+                        <form asp-controller="home" asp-action="add" asp-route-id="@item.Boek.BoekId" method="post">
+                            <button class="addCartButton">
+                                <ion-icon name="bag-add-outline" class="IconDetails" style="color:black"></ion-icon>                       
+                            </button>
+                        </form>
+                        <form asp-action="Remove" asp-route-id="@item.VerlanglijstId">
+                            <button type="submit" class="addCartButton">
+                                <ion-icon name="close-circle-outline" style="font-size: 22px;"></ion-icon>
+                            </button>
+                        </form>
+                    </div>
                 </a>
             </div>
         }
