@@ -12,11 +12,11 @@ using System.Security.Claims;
 
 namespace BoekWinkel.Controllers
 {
-    public class MangeAccountController : Controller
+    public class ManageaccountController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MangeAccountController(ApplicationDbContext context)
+        public ManageaccountController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -26,14 +26,14 @@ namespace BoekWinkel.Controllers
         // GET: MangeAccount
         public async Task<IActionResult> Index(string userId)
         {
-            if(string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();
             }
 
             var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if(userId != loggedInUser)
+            if (userId != loggedInUser)
             {
                 return Unauthorized();
             }
@@ -45,7 +45,7 @@ namespace BoekWinkel.Controllers
             return View(userDetails);
         }
 
-        // GET: MangeAccount/Details/5
+        // GET: Manageaccount/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,18 +63,18 @@ namespace BoekWinkel.Controllers
             return View(userMoneyModel);
         }
 
-        // GET: MangeAccount/Create
+        // GET: Manageaccount/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MangeAccount/Create
+        // POST: Manageaccount/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserMoneyId,Money,LinkedUser")] UserMoneyModel userMoneyModel)
+        public async Task<IActionResult> Create([Bind("UserMoneyId,Money,LinkedUser,Land,Regio_Provincie,Stad,Postcode,Straatnaam,Voornaam,TussenVoegsel,Achternaam")] UserMoneyModel userMoneyModel)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace BoekWinkel.Controllers
             return View(userMoneyModel);
         }
 
-        // GET: MangeAccount/Edit/5
+        // GET: Manageaccount/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,12 +101,12 @@ namespace BoekWinkel.Controllers
             return View(userMoneyModel);
         }
 
-        // POST: MangeAccount/Edit/5
+        // POST: Manageaccount/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserMoneyId,Money,LinkedUser")] UserMoneyModel userMoneyModel)
+        public async Task<IActionResult> Edit(int id, [Bind("UserMoneyId,Money,LinkedUser,Land,Regio_Provincie,Stad,Postcode,Straatnaam,Voornaam,TussenVoegsel,Achternaam")] UserMoneyModel userMoneyModel)
         {
             if (id != userMoneyModel.UserMoneyId)
             {
@@ -136,7 +136,7 @@ namespace BoekWinkel.Controllers
             return View(userMoneyModel);
         }
 
-        // GET: MangeAccount/Delete/5
+        // GET: Manageaccount/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,7 +154,7 @@ namespace BoekWinkel.Controllers
             return View(userMoneyModel);
         }
 
-        // POST: MangeAccount/Delete/5
+        // POST: Manageaccount/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

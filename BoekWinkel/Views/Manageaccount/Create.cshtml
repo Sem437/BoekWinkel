@@ -1,0 +1,76 @@
+﻿@model BoekWinkel.Models.UserMoneyModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>UserMoneyModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Money" class="control-label"></label>
+                <input asp-for="Money" class="form-control" />
+                <span asp-validation-for="Money" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LinkedUser" class="control-label"></label>
+                <input asp-for="LinkedUser" class="form-control" />
+                <span asp-validation-for="LinkedUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Land" class="control-label"></label>
+                <input asp-for="Land" class="form-control" />
+                <span asp-validation-for="Land" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Regio_Provincie" class="control-label"></label>
+                <input asp-for="Regio_Provincie" class="form-control" />
+                <span asp-validation-for="Regio_Provincie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stad" class="control-label"></label>
+                <input asp-for="Stad" class="form-control" />
+                <span asp-validation-for="Stad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Postcode" class="control-label"></label>
+                <input asp-for="Postcode" class="form-control" />
+                <span asp-validation-for="Postcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Straatnaam" class="control-label"></label>
+                <input asp-for="Straatnaam" class="form-control" />
+                <span asp-validation-for="Straatnaam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Voornaam" class="control-label"></label>
+                <input asp-for="Voornaam" class="form-control" />
+                <span asp-validation-for="Voornaam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TussenVoegsel" class="control-label"></label>
+                <input asp-for="TussenVoegsel" class="form-control" />
+                <span asp-validation-for="TussenVoegsel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Achternaam" class="control-label"></label>
+                <input asp-for="Achternaam" class="form-control" />
+                <span asp-validation-for="Achternaam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

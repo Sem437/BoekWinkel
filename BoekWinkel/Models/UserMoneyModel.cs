@@ -11,6 +11,22 @@ namespace BoekWinkel.Models
         public decimal Money { get; set; } 
 
         [Required]
-        public string LinkedUser { get; set; }
+        public required string LinkedUser { get; set; }
+
+        public string? Land { get; set; }
+
+        public string? Regio_Provincie { get; set; }
+
+        public string? Stad { get; set; }
+
+        public string? Postcode { get; set; }
+
+        public string? Straatnaam { get; set; }
+
+        public string? Voornaam { get; set; }
+
+        public string? TussenVoegsel { get; set; }
+
+        public string? Achternaam { get; set; }
     }
 }
