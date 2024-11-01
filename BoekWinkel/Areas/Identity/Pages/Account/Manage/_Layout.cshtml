@@ -9,17 +9,21 @@
     }
 }
 
-<h1>Manage your account bro</h1>
+@section IdentityLayout {
+    <link rel="stylesheet" href="~/css/Identity/Layout.css" />
+}
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+
+<div class="IdentityContainer">
+    <h1>Manage your account</h1>
+    <div>       
+        <div class="row">
+            <div class="col-md-3">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
         </div>
     </div>
 </div>
