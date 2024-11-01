@@ -13,9 +13,13 @@
 <div class="MainContainer">
     <h1>Your Account</h1>
     <p>@User.FindFirstValue(ClaimTypes.Email)</p>
+    @if(User.FindFirstValue(ClaimTypes.MobilePhone) != null)
+    {
+        <p>User.FindFirstValue(ClaimTypes.MobilePhone)</p>
+    }
     @foreach (var item in Model) {
 
         <p> Balance: €@Html.DisplayFor(modelItem => item.Money)</p>
+        <p><a asp-action="edit" asp-route-Id="@item.UserMoneyId">Update balance</a></p>
     }
-    <a asp-action="update" asp-route-id="">Update balance</a>
 </div>

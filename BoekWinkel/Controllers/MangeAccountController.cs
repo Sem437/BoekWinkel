@@ -38,7 +38,11 @@ namespace BoekWinkel.Controllers
                 return Unauthorized();
             }
 
-            return View(await _context.UserMoneyModel.ToListAsync());
+            var userDetails = await _context.UserMoneyModel
+                .Where(u => u.LinkedUser == userId)
+                .ToListAsync();
+
+            return View(userDetails);
         }
 
         // GET: MangeAccount/Details/5

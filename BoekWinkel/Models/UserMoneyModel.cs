@@ -8,7 +8,7 @@ namespace BoekWinkel.Models
         public int UserMoneyId { get; set; }
 
         [Required]
-        public decimal Money { get; set; }
+        public decimal Money { get; set; } 
 
         [Required]
         public string LinkedUser { get; set; }
