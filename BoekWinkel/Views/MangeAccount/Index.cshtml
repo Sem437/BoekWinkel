@@ -1,0 +1,21 @@
+﻿@using System.Security.Claims
+@model IEnumerable<BoekWinkel.Models.UserMoneyModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section manageAccount {
+    <link rel="stylesheet" href="~/css/manageAccount/Index.css"  />
+}
+
+<div class="MainContainer">
+    <h1>Your Account</h1>
+    <p>@User.FindFirstValue(ClaimTypes.Email)</p>
+    @foreach (var item in Model) {
+
+        <p> Balance: €@Html.DisplayFor(modelItem => item.Money)</p>
+    }
+    <a asp-action="update" asp-route-id="">Update balance</a>
+</div>

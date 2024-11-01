@@ -14,5 +14,6 @@ namespace BoekWinkel.Data
         public DbSet<BoekWinkel.Models.VoorRaadBoeken> VoorRaadBoeken { get; set; } = default!;
         public DbSet<BoekWinkel.Models.Winkelwagen> Winkelwagen { get; set; } = default!;    
         public DbSet<BoekWinkel.Models.VerlanglijstModel> VerlanglijstModel { get; set; } = default!;
+        public DbSet<BoekWinkel.Models.UserMoneyModel> UserMoneyModel { get; set; } = default!;
     }
 }

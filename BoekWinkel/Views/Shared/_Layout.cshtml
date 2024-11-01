@@ -24,6 +24,8 @@
     @RenderSection("wishlistIndex", required: false)
     <!--Mange account-->
     @RenderSection("IdentityLayout", required: false)
+
+    @RenderSection("manageAccount", required: false)
 </head>
 <body>
     <header>
@@ -53,7 +55,7 @@
 
             <div class="navBarBottom">                   
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><h5>Home</h5></a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Index"><h5>Account</h5></a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="MangeAccount" asp-action="Index" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)"><h5>Account</h5></a>
                 @if(User.IsInRole("Admin"))
                 {
                     <a class="nav-link text-dark" asp-area="" asp-controller="Voorraad" asp-action="Index"><h5>Stock</h5></a>
