@@ -86,11 +86,21 @@ namespace BoekWinkel.Controllers
         }
 
         // GET: Manageaccount/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string userId)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if(userId == null) 
+            {
+                return NotFound();
+            }
+
+            if(userId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
             }
 
             var userMoneyModel = await _context.UserMoneyModel.FindAsync(id);
@@ -106,11 +116,16 @@ namespace BoekWinkel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserMoneyId,Money,LinkedUser,Land,Regio_Provincie,Stad,Postcode,Straatnaam,Voornaam,TussenVoegsel,Achternaam")] UserMoneyModel userMoneyModel)
+        public async Task<IActionResult> Edit(int id, string userId, [Bind("UserMoneyId,Money,LinkedUser,Land,Regio_Provincie,Stad,Postcode,Straatnaam,Voornaam,TussenVoegsel,Achternaam")] UserMoneyModel userMoneyModel)
         {
             if (id != userMoneyModel.UserMoneyId)
             {
                 return NotFound();
+            }
+
+            if(userId == null)
+            {
+                return RedirectToAction("null");
             }
 
             if (ModelState.IsValid)
@@ -131,9 +146,9 @@ namespace BoekWinkel.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new {userId = userId});
             }
-            return View(userMoneyModel);
+            return RedirectToAction("FOUT");
         }
 
         // GET: Manageaccount/Delete/5

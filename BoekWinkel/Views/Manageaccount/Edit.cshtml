@@ -1,17 +1,20 @@
-﻿@model BoekWinkel.Models.UserMoneyModel
+﻿@using System.Security.Claims
+@model BoekWinkel.Models.UserMoneyModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+@section manageAccountEdit {
+    <link rel="stylesheet" href="~/css/manageAccount/Edit.css" />
+}
 
-<h4>UserMoneyModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+
+<div class="MainContainerEdit">
+    <div class="SubContainer">
+        <h1>Edit your balance</h1>
+        <form asp-action="Edit" method="post" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserMoneyId" />
             <div class="form-group">
@@ -19,23 +22,22 @@
                 <input asp-for="Money" class="form-control" />
                 <span asp-validation-for="Money" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LinkedUser" class="control-label"></label>
-                <input asp-for="LinkedUser" class="form-control" />
+            <div class="form-group">              
+                <input asp-for="LinkedUser" type="hidden" class="form-control" />
                 <span asp-validation-for="LinkedUser" class="text-danger"></span>
-            </div>
+            </div>    
             <div class="form-group">
                 <label asp-for="Land" class="control-label"></label>
                 <input asp-for="Land" class="form-control" />
                 <span asp-validation-for="Land" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Regio_Provincie" class="control-label"></label>
+                <label asp-for="Regio_Provincie" class="control-label">Region/province</label>
                 <input asp-for="Regio_Provincie" class="form-control" />
                 <span asp-validation-for="Regio_Provincie" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Stad" class="control-label"></label>
+                <label asp-for="Stad" class="control-label">City</label>
                 <input asp-for="Stad" class="form-control" />
                 <span asp-validation-for="Stad" class="text-danger"></span>
             </div>
@@ -45,33 +47,33 @@
                 <span asp-validation-for="Postcode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Straatnaam" class="control-label"></label>
+                <label asp-for="Straatnaam" class="control-label">Streetname + number</label>
                 <input asp-for="Straatnaam" class="form-control" />
                 <span asp-validation-for="Straatnaam" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Voornaam" class="control-label"></label>
+                <label asp-for="Voornaam" class="control-label">Fisrtname</label>
                 <input asp-for="Voornaam" class="form-control" />
                 <span asp-validation-for="Voornaam" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TussenVoegsel" class="control-label"></label>
+                <label asp-for="TussenVoegsel" class="control-label">Infix</label>
                 <input asp-for="TussenVoegsel" class="form-control" />
                 <span asp-validation-for="TussenVoegsel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Achternaam" class="control-label"></label>
+                <label asp-for="Achternaam" class="control-label">Lastname</label>
                 <input asp-for="Achternaam" class="form-control" />
                 <span asp-validation-for="Achternaam" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="submitInput">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <div>
+            <a asp-action="Index" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Back to List</a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

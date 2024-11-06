@@ -16,11 +16,27 @@
     @if (User.FindFirstValue(ClaimTypes.MobilePhone) != null)
     {
         <p>User.FindFirstValue(ClaimTypes.MobilePhone)</p>
-    }
+    }   
     @foreach (var item in Model)
     {
+        if(item.Voornaam != null && item.Achternaam != null)
+        {
+            <p>@item.Voornaam @item.Achternaam</p>
+        }
+        else if (item.Voornaam != null && item.Achternaam != null && item.TussenVoegsel != null)
+        {
+            <p>@item.Voornaam @item.TussenVoegsel @item.Achternaam</p>
+        }
+        else if(item.Achternaam != null)
+        {
+            <p>@item.Achternaam</p>
+        }
+        else
+        {
+            <p>@item.Voornaam</p>           
+        }
 
         <p> Balance: €@Html.DisplayFor(modelItem => item.Money)</p>
-        <p><a asp-action="edit" asp-route-Id="@item.UserMoneyId">Update balance</a></p>
+        <p><a asp-action="edit" asp-route-Id="@item.UserMoneyId" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Update balance</a></p>
     }
 </div>
