@@ -1,5 +1,11 @@
-﻿.MainContainer
-{
-    display: inline-flex;
-    flex-direction:column;
+﻿.title  {
+    margin-inline: 20vw;
+}
+
+.MainContainer {
+    display: flex;
+}
+
+.persenolDetails {
+    margin-left:3vw;
 }

@@ -10,33 +10,64 @@
     <link rel="stylesheet" href="~/css/manageAccount/Index.css" />
 }
 
+<div class="title"><h1>Your Account</h1></div>
 <div class="MainContainer">
-    <h1>Your Account</h1>
-    <p>@User.FindFirstValue(ClaimTypes.Email)</p>
-    @if (User.FindFirstValue(ClaimTypes.MobilePhone) != null)
-    {
-        <p>User.FindFirstValue(ClaimTypes.MobilePhone)</p>
-    }   
-    @foreach (var item in Model)
-    {
-        if(item.Voornaam != null && item.Achternaam != null)
+    <div>
+        <p>@User.FindFirstValue(ClaimTypes.Email)</p>
+        @if (User.FindFirstValue(ClaimTypes.MobilePhone) != null)
         {
-            <p>@item.Voornaam @item.Achternaam</p>
+            <p>User.FindFirstValue(ClaimTypes.MobilePhone)</p>
         }
-        else if (item.Voornaam != null && item.Achternaam != null && item.TussenVoegsel != null)
+        @foreach (var item in Model)
+        {          
+            <p> Balance: €@Html.DisplayFor(modelItem => item.Money)</p>
+            <p><a asp-action="edit" asp-route-Id="@item.UserMoneyId" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Update profile</a></p>
+        }
+    </div>
+    <div class="persenolDetails">
+        @foreach (var item in Model)
         {
-            <p>@item.Voornaam @item.TussenVoegsel @item.Achternaam</p>
-        }
-        else if(item.Achternaam != null)
-        {
-            <p>@item.Achternaam</p>
-        }
-        else
-        {
-            <p>@item.Voornaam</p>           
-        }
+            if (item.Voornaam != null && item.Achternaam != null)
+            {
+                <p>@item.Voornaam @item.Achternaam</p>
+            }
+            else if (item.Voornaam != null && item.Achternaam != null && item.TussenVoegsel != null)
+            {
+                <p>@item.Voornaam @item.TussenVoegsel @item.Achternaam</p>
+            }
+            else if (item.Achternaam != null)
+            {
+                <p>@item.Achternaam</p>
+            }
+            else
+            {
+                <p>@item.Voornaam</p>
+            }
 
-        <p> Balance: €@Html.DisplayFor(modelItem => item.Money)</p>
-        <p><a asp-action="edit" asp-route-Id="@item.UserMoneyId" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Update balance</a></p>
-    }
+            if(item.Land != null)
+            {
+                <p>@item.Land</p>
+            }
+
+            if(item.Regio_Provincie != null)
+            {
+                <p>@item.Regio_Provincie</p>
+            }
+
+            if(item.Stad != null)
+            {
+                <p>@item.Stad</p>
+            }
+
+            if(item.Postcode != null)
+            {
+                <p>@item.Postcode</p>
+            }
+
+            if(item.Straatnaam != null)
+            {
+                <p>@item.Straatnaam</p>
+            }
+        }
+    </div>
 </div>
