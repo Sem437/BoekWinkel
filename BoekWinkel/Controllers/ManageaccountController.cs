@@ -39,8 +39,8 @@ namespace BoekWinkel.Controllers
             }
 
             var userDetails = await _context.UserMoneyModel
-                .Where(u => u.LinkedUser == userId)
-                .ToListAsync();
+                .Where(u => u.LinkedUser == userId)                
+                .ToListAsync();            
 
             return View(userDetails);
         }
