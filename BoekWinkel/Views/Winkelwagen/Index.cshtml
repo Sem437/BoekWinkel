@@ -59,6 +59,6 @@
     }
     <div>
         <h4>Total: €@Model.TotalePrijs.ToString("0.00")</h4>
-        <a class="btn btn-primary" href="/Bestellen">Afrekenen</a>
+        <a class="btn btn-primary" asp-action="Order" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Afrekenen</a>
     </div>
 </div>

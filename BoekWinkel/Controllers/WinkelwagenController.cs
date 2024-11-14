@@ -146,7 +146,7 @@ namespace BoekWinkel.Controllers
             if(string.IsNullOrEmpty(UserId))
             {
                 return Redirect("/Identity/Account/Login");
-            }
+            }          
 
             var winkelwagen = await _context.Winkelwagen.FindAsync(id);
             if (winkelwagen != null)
@@ -158,6 +158,18 @@ namespace BoekWinkel.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+       //GET Winkelwagen/Order
+       public async Task<IActionResult> Order(string userId)
+       {
+            var Order = await _context.Winkelwagen
+                .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true
+                && w.AantalItems > 0 && w.Betaald == false)
+                .Include(w => w.Boek) // voegt het boekModel toe                
+                .ToListAsync();
+
+            return View(Order);
+       }
+        
         private bool WinkelwagenExists(int id)
         {
             return _context.Winkelwagen.Any(e => e.WinkelwagenId == id);

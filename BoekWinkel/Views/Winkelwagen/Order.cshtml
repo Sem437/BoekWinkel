@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BoekWinkel.Models.Winkelwagen>
+
+
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Order</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Boek Naam</th>
+            <th>Aantal</th>
+            <th>Prijs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Boek.BoekTitle/td>
+                <td>@item.AantalItems</td>
+                <td>€@item.Boek.BoekPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
