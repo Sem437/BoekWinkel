@@ -19,5 +19,7 @@ namespace BoekWinkel.Models
         public bool Betaald { get; set; } = false;
 
         public BoekModel Boek { get; set; }
+
+        public UserMoneyModel? UserMoney { get; set; }
     }
 }

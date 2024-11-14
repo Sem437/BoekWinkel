@@ -4,6 +4,7 @@ using BoekWinkel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoekWinkel.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241114153301_AddUserMoneyIdToWinkelwagen")]
+    partial class AddUserMoneyIdToWinkelwagen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,7 +179,7 @@ namespace BoekWinkel.Data.Migrations
                     b.Property<bool>("InWinkelwagen")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UserMoneyId")
+                    b.Property<int>("UserMoneyId")
                         .HasColumnType("int");
 
                     b.Property<string>("gebruikersId")
@@ -426,7 +429,9 @@ namespace BoekWinkel.Data.Migrations
 
                     b.HasOne("BoekWinkel.Models.UserMoneyModel", "UserMoney")
                         .WithMany()
-                        .HasForeignKey("UserMoneyId");
+                        .HasForeignKey("UserMoneyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Boek");
 

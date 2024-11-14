@@ -7,6 +7,40 @@
 }
 
 <h1>Order</h1>
+<table>
+    <thead>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Country</th>
+        <th>Regio</th>
+        <th>City</th>
+        <th>Postcode</th>
+        <th>Steetname</th>
+    </thead>
+    <tbody>
+        @{
+            bool userDisplayed = false;
+        }
+        @foreach (var i in Model)
+        {
+            if (!userDisplayed)
+            {
+                <tr>
+                    <td>@(i.UserMoney?.Voornaam ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Achternaam ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Land ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Regio_Provincie ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Stad ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Postcode ?? "Onbekend")</td>
+                    <td>@(i.UserMoney?.Straatnaam ?? "Onbekend")</td>
+                </tr>
+                userDisplayed = true;  // Zorg ervoor dat we de gebruiker maar één keer weergeven
+            }
+        }
+    </tbody>
+</table>
+
+
 
 <table>
     <thead>
@@ -14,15 +48,18 @@
             <th>Boek Naam</th>
             <th>Aantal</th>
             <th>Prijs</th>
+            <th>Voornaam</th>
+            <th>Achternaam</th>
+            <th>Land</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Boek.BoekTitle/td>
+                <td>@item.Boek.BoekTitle</td>
                 <td>@item.AantalItems</td>
-                <td>€@item.Boek.BoekPrice</td>
+                <td>€@item.Boek.BoekPrice</td>      
             </tr>
         }
     </tbody>

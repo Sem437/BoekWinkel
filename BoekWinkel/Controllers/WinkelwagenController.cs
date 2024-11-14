@@ -165,6 +165,7 @@ namespace BoekWinkel.Controllers
                 .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true
                 && w.AantalItems > 0 && w.Betaald == false)
                 .Include(w => w.Boek) // voegt het boekModel toe                
+                .Include(w => w.UserMoney)
                 .ToListAsync();
 
             return View(Order);
