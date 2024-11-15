@@ -9,6 +9,7 @@ using BoekWinkel.Data;
 using BoekWinkel.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 
 namespace BoekWinkel.Controllers
 {
@@ -46,11 +47,16 @@ namespace BoekWinkel.Controllers
         }
 
         // GET: Manageaccount/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string userId)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if(string.IsNullOrEmpty(userId) || userId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
             }
 
             var userMoneyModel = await _context.UserMoneyModel

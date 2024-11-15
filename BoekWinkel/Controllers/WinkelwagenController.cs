@@ -161,6 +161,11 @@ namespace BoekWinkel.Controllers
        //GET Winkelwagen/Order
        public async Task<IActionResult> Order(string userId)
        {
+            if(string.IsNullOrEmpty(userId) || userId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+
             var Order = await _context.Winkelwagen
                 .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true
                 && w.AantalItems > 0 && w.Betaald == false)
@@ -170,7 +175,100 @@ namespace BoekWinkel.Controllers
 
             return View(Order);
        }
-        
+
+        // POST Winkelwagen/Order
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Order(string userId, [Bind("UserMoneyId,Money,LinkedUser,Land,Regio_Provincie,Stad,Postcode,Straatnaam,Voornaam,TussenVoegsel,Achternaam")] UserMoneyModel userMoneyModel)
+        {
+            if (string.IsNullOrEmpty(userId) || userId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+     
+            //transactie doet alle code uitvoeren als er geen fouten zijn of niks
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Bereken totale prijs
+                decimal totalPrice = await _context.Winkelwagen
+                    .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true && w.AantalItems > 0 && w.Betaald == false)
+                    .SumAsync(w => w.AantalItems * w.Boek.BoekPrice);
+
+                // Ophalen gebruikersgeld
+                var userMoneyModelToUpdate = await _context.UserMoneyModel
+                    .FirstOrDefaultAsync(u => u.LinkedUser == userId);
+
+                if (userMoneyModelToUpdate == null)
+                {
+                    return NotFound("Gebruikersgeld niet gevonden.");
+                }
+
+                if (totalPrice > userMoneyModelToUpdate.Money)
+                {
+                    return BadRequest(new { Message = "Payment failed. User does not have enough money." });
+                }
+
+                // Update geld
+                userMoneyModelToUpdate.Money -= totalPrice;
+                _context.Update(userMoneyModelToUpdate);
+
+                // Haal boeken met aantallen op
+                var boekenMetAantal = await _context.Winkelwagen
+                    .Where(w => w.gebruikersId == userId && w.Betaald == false)
+                    .Select(w => new { w.Boek.BoekId, w.AantalItems }) //geeft bijv 1 : 4 terug
+                    .ToListAsync();                                    // eerst boekId dan voorrraad
+
+                // Verwerk voorraadaanpassingen
+                foreach (var boek in boekenMetAantal)
+                {
+                    var voorraadBoek = await _context.VoorRaadBoeken.FirstOrDefaultAsync(v => v.boekId == boek.BoekId);
+
+                    if (voorraadBoek == null)
+                    {
+                        return NotFound($"Boek met ID {boek.BoekId} niet gevonden in voorraad.");
+                    }
+
+                    if (voorraadBoek.voorRaad < boek.AantalItems)
+                    {
+                        return BadRequest($"Niet genoeg voorraad voor boek ID: {boek.BoekId}");
+                    }
+
+                    voorraadBoek.voorRaad -= boek.AantalItems;
+                    voorraadBoek.verkocht += boek.AantalItems;
+                    _context.Update(voorraadBoek);
+                }
+
+                // Markeer winkelwagenitems als betaald
+                var winkelwagenItems = await _context.Winkelwagen
+                    .Where(w => w.gebruikersId == userId && w.InWinkelwagen == true)
+                    .ToListAsync();
+
+                foreach (var item in winkelwagenItems)
+                {
+                    item.Betaald = true;
+                    item.InWinkelwagen = false;
+                }
+                _context.UpdateRange(winkelwagenItems);
+
+                // Sla alle wijzigingen op
+                await _context.SaveChangesAsync();
+
+                // Bevestig transactie
+                await transaction.CommitAsync();
+
+                return RedirectToAction("Index", new { userId });
+            }
+            catch (Exception ex)
+            {
+                // Rollback transaction bij fouten //zorgt ervoor dat er niks gebeurt
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { Message = "Er ging iets mis tijdens het verwerken van uw bestelling.", Error = ex.Message });
+            }
+        }
+
+
         private bool WinkelwagenExists(int id)
         {
             return _context.Winkelwagen.Any(e => e.WinkelwagenId == id);

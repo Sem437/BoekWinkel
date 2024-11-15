@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BoekWinkel.Models.Winkelwagen>
+﻿@using System.Security.Claims
+@model IEnumerable<BoekWinkel.Models.Winkelwagen>
 
 
 @{
@@ -21,26 +22,29 @@
         @{
             bool userDisplayed = false;
         }
-        @foreach (var i in Model)
+        @if(Model != null)
         {
-            if (!userDisplayed)
+            @foreach (var i in Model)
             {
-                <tr>
-                    <td>@(i.UserMoney?.Voornaam ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Achternaam ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Land ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Regio_Provincie ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Stad ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Postcode ?? "Onbekend")</td>
-                    <td>@(i.UserMoney?.Straatnaam ?? "Onbekend")</td>
-                </tr>
-                userDisplayed = true;  // Zorg ervoor dat we de gebruiker maar één keer weergeven
+                if (!userDisplayed)
+                {
+                    <tr>
+                        <td>@(i.UserMoney?.Voornaam ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Achternaam ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Land ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Regio_Provincie ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Stad ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Postcode ?? "Onbekend")</td>
+                        <td>@(i.UserMoney?.Straatnaam ?? "Onbekend")</td>
+                        <td><a asp-controller="Manageaccount" asp-action="edit" asp-route-userId="@i.gebruikersId" asp-route-id="@i.UserMoney.UserMoneyId">Edit</a></td>
+                    </tr>
+                    userDisplayed = true;  // Zorg ervoor dat we de gebruiker maar één keer weergeven
+
+                }
             }
         }
     </tbody>
 </table>
-
-
 
 <table>
     <thead>
@@ -48,19 +52,26 @@
             <th>Boek Naam</th>
             <th>Aantal</th>
             <th>Prijs</th>
-            <th>Voornaam</th>
-            <th>Achternaam</th>
-            <th>Land</th>
         </tr>
     </thead>
     <tbody>
+        @{
+            decimal totalPrice = 0;
+        }
         @foreach (var item in Model)
         {
+            decimal itemTotalPrice = item.AantalItems * item.Boek.BoekPrice;  
+            totalPrice += itemTotalPrice;  
             <tr>
                 <td>@item.Boek.BoekTitle</td>
                 <td>@item.AantalItems</td>
-                <td>€@item.Boek.BoekPrice</td>      
+                <td>€@item.Boek.BoekPrice</td>
             </tr>
         }
     </tbody>
 </table>
+
+<h3>Totaalprijs: €@totalPrice</h3> 
+<form method="post" asp-action="Order" asp-route-userId="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
+    <input type="submit" value="Pay"/>
+</form>
