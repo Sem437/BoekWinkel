@@ -106,7 +106,7 @@ namespace BoekWinkel.Controllers
             }
 
             var winkelwagenItem = await _context.Winkelwagen
-                .FirstOrDefaultAsync(w => w.gebruikersId == userId && w.BoekId == Id && w.Betaald == false && w.InWinkelwagen == true);
+                .FirstOrDefaultAsync(w => w.gebruikersId == userId && w.BoekId == Id && w.Betaald == false);
 
             if (winkelwagenItem != null)
             {
@@ -120,6 +120,12 @@ namespace BoekWinkel.Controllers
                 var userMoney = await _context.UserMoneyModel
                                 .FirstOrDefaultAsync(u => u.LinkedUser == userId);
 
+                if (userMoney == null)
+                {
+                    // Optioneel: toon een foutmelding of maak een nieuw UserMoney-record aan
+                    TempData["Error"] = "Er is geen gekoppeld UserMoney-record gevonden.";
+                    return RedirectToAction("Details", new { Id = Id });
+                }
 
                 // Voeg een nieuw record toe als het boek niet in de winkelwagen zit
                 var nieuwWinkelwagenItem = new Winkelwagen
@@ -135,9 +141,9 @@ namespace BoekWinkel.Controllers
                 _context.Add(nieuwWinkelwagenItem);
             }
 
+            
             var inDB = _context.Winkelwagen
                 .FirstOrDefault(w => w.gebruikersId == userId && w.BoekId == Id);
-
 
             if(inDB != null)
             {
@@ -154,8 +160,10 @@ namespace BoekWinkel.Controllers
                     return RedirectToAction("Index", "Winkelwagen", new { userId = userId });                  
                 }
             }
+            
 
-  
+            await _context.SaveChangesAsync(); // Sla wijzigingen op
+
             ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Id = Id;
 
