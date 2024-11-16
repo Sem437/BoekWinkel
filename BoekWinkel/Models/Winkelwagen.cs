@@ -20,6 +20,6 @@ namespace BoekWinkel.Models
 
         public BoekModel Boek { get; set; }
 
-        public UserMoneyModel? UserMoney { get; set; }
+        public UserMoneyModel UserMoney { get; set; }
     }
 }

@@ -116,6 +116,11 @@ namespace BoekWinkel.Controllers
             }
             else
             {
+                //GET userMoneyModel
+                var userMoney = await _context.UserMoneyModel
+                                .FirstOrDefaultAsync(u => u.LinkedUser == userId);
+
+
                 // Voeg een nieuw record toe als het boek niet in de winkelwagen zit
                 var nieuwWinkelwagenItem = new Winkelwagen
                 {
@@ -123,7 +128,8 @@ namespace BoekWinkel.Controllers
                     BoekId = Id,
                     InWinkelwagen = true,
                     Betaald = false,
-                    AantalItems = 1
+                    AantalItems = 1,
+                    UserMoney = userMoney // Stel dit altijd in
                 };
 
                 _context.Add(nieuwWinkelwagenItem);
