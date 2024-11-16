@@ -93,18 +93,45 @@ namespace BoekWinkel.Controllers
                 return RedirectToAction("Identity","Account", "Login"); 
             }
 
+            // Controleer voorraad
+            var voorRaad = await _context.VoorRaadBoeken
+                .Where(v => v.boekId == Id)
+                .Select(v => v.voorRaad)
+                .FirstOrDefaultAsync();
+
+            if (voorRaad <= 0)
+            {
+                TempData["Error"] = "Dit boek is niet meer op voorraad.";
+                return RedirectToAction("Details", new { Id = Id });
+            }
+
+            var winkelwagenItem = await _context.Winkelwagen
+                .FirstOrDefaultAsync(w => w.gebruikersId == userId && w.BoekId == Id && w.Betaald == false && w.InWinkelwagen == true);
+
+            if (winkelwagenItem != null)
+            {
+                // Update het aantal als het boek al in de winkelwagen zit
+                winkelwagenItem.AantalItems += 1; // Verhoog het aantal met 1
+                _context.Update(winkelwagenItem);
+            }
+            else
+            {
+                // Voeg een nieuw record toe als het boek niet in de winkelwagen zit
+                var nieuwWinkelwagenItem = new Winkelwagen
+                {
+                    gebruikersId = userId,
+                    BoekId = Id,
+                    InWinkelwagen = true,
+                    Betaald = false,
+                    AantalItems = 1
+                };
+
+                _context.Add(nieuwWinkelwagenItem);
+            }
+
             var inDB = _context.Winkelwagen
                 .FirstOrDefault(w => w.gebruikersId == userId && w.BoekId == Id);
 
-            var voorRaad = _context.VoorRaadBoeken
-                .Where(v => v.boekId == Id)
-                .Select(v => v.voorRaad)
-                .FirstOrDefault();
-
-            if(voorRaad <= 0)
-            {             
-                return RedirectToAction("details", new {Id = Id});
-            }
 
             if(inDB != null)
             {
@@ -122,21 +149,7 @@ namespace BoekWinkel.Controllers
                 }
             }
 
-            var winkelwagen = new Winkelwagen
-            {
-                gebruikersId = userId,
-                BoekId = Id,
-                InWinkelwagen = true, 
-                Betaald = false       
-            };
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(winkelwagen);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Winkelwagen", new { userId = userId });
-            }
-
+  
             ViewBag.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Id = Id;
 
@@ -153,7 +166,7 @@ namespace BoekWinkel.Controllers
             if (userId == null)
             {
                 return RedirectToAction("Identity", "Account", "Login");
-            }
+            }            
 
             // Haal de waarden uit de Request.Form
             var gebruikersId = Request.Form["GebruikersId"];
